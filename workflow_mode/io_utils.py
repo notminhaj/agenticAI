@@ -80,7 +80,7 @@ def persist(results: list, folder: str = "."):
         for i, r in enumerate(results, 1):
             f.write(f"### {i}) {r['title']}\n")
             f.write(f"{r['url']}\n\n")
-            f.write(f"**Summary:** {r['summary']}\n\n")
+            f.write(f"{r['summary']}\n\n")
             f.write("---\n\n")
     
     # 4. JSONL (one line per result)
