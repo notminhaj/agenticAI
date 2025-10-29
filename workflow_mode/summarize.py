@@ -20,8 +20,13 @@ def summarize(raw_text: str, title_guess: str = "Untitled") -> dict:
     
     prompt = (
         f"Summarize the following AI paper for a busy Junior AI Intern. "
-        f"Include: problem, approach, key results, why it matters. 120–180 words."
-        f"\n\nTitle: {title_guess}\n\n{raw_text[:6000]}"  # Truncate to 6000 chars
+        f"Use EXACTLY this structure with these exact headers:\n\n"
+        f"**Problem:** [description]\n"
+        f"**Approach:** [description]\n"
+        f"**Key Results:** [description]\n"
+        f"**Why It Matters:** [description]\n\n"
+        f"Keep each section to 30-50 words. Total 120–180 words.\n\n"
+        f"Title: {title_guess}\n\n{raw_text[:6000]}"  # Truncate to 6000 chars
     )
 
     try:
@@ -43,9 +48,9 @@ def summarize(raw_text: str, title_guess: str = "Untitled") -> dict:
             "tokens_out": tokens_out
         }
     except Exception as e:
-        # Retry once
+        # Retry once with same prompt
         try:
-            response = client.chat.completions.create(  # Same as above
+            response = client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.5,
