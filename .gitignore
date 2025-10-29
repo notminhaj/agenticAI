@@ -5,6 +5,6 @@ __pycache__/
 *.pyc
 *.pyo
 
-# Generated reports
-workflow_mode/report_*.md
-workflow_mode/runs_*.jsonl
+# Generated reports (uncomment to ignore, or commit for documentation)
+# workflow_mode/report_*.md
+# workflow_mode/runs_*.jsonl
