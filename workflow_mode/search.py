@@ -90,22 +90,3 @@ def search(topic: str = "machine learning", limit: int = 5):
         error_msg = str(e)
         print(f"[ERROR] arXiv API error: {error_msg}")
         return [{"title": "Search Error", "url": "", "source": "error", "error": error_msg}]
-
-
-if __name__ == "__main__":
-    # Test the function
-    print("Testing search() function...\n")
-    results = search("neural networks deep learning")
-    print(f"\n" + "="*70)
-    print(f"Found {len(results)} results:")
-    print("="*70 + "\n")
-    for i, result in enumerate(results, 1):
-        print(f"{i}. {result['title']}")
-        if result.get('url'):
-            print(f"   URL: {result['url']}")
-        print(f"   Source: {result['source']}")
-        if 'id' in result:
-            print(f"   ID: {result['id']}")
-        if 'error' in result:
-            print(f"   ERROR: {result['error']}")
-        print()
