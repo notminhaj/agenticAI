@@ -1,1 +1,10 @@
 /.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Generated reports
+workflow_mode/report_*.md
+workflow_mode/runs_*.jsonl

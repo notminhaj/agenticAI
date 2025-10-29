@@ -2,6 +2,15 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+from pathlib import Path
+from dotenv import load_dotenv
+from datetime import datetime
+import json
+import os
+
+# Load .env file from parent directory (project root)
+env_path = Path(__file__).parent.parent / '.env'
+load_dotenv(env_path)
 
 def fetch(url: str, timeout: int = 10) -> dict:
     """
@@ -52,3 +61,33 @@ def fetch(url: str, timeout: int = 10) -> dict:
         "raw_text": raw_text,
         "kind": kind
     }
+
+
+def persist(results: list, folder: str = "."):
+    """
+    Save summaries to markdown + JSONL.
+    """
+    # 1. Create timestamp
+    timestamp = datetime.now().strftime("%Y-%m-%d")
+    
+    # 2. Ensure folder exists
+    os.makedirs(folder, exist_ok=True)
+    
+    # 3. Markdown report
+    md_path = os.path.join(folder, f"report_{timestamp}.md")
+    with open(md_path, "w", encoding="utf-8") as f:
+        f.write(f"# Weekly AI Paper Brief – {timestamp}\n\n")
+        for i, r in enumerate(results, 1):
+            f.write(f"### {i}) {r['title']}\n")
+            f.write(f"{r['url']}\n\n")
+            f.write(f"**Summary:** {r['summary']}\n\n")
+            f.write("---\n\n")
+    
+    # 4. JSONL (one line per result)
+    jsonl_path = os.path.join(folder, f"runs_{timestamp}.jsonl")
+    with open(jsonl_path, "w", encoding="utf-8") as f:
+        for r in results:
+            f.write(json.dumps(r, ensure_ascii=False) + "\n")
+    
+    print(f"Saved report: {md_path}")
+    print(f"Saved raw data: {jsonl_path}")
