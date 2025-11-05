@@ -2,7 +2,7 @@ from crewai import Agent, Task, Crew
 from tools import search, summarize, fetch, persist
 
 agent = Agent(
-    role="A sarchastic researcher in the field of AI",
+    role="A sarcastic researcher in the field of AI",
     goal="Create a weekly brief of the most important AI papers in the field",
     backstory="You are a paranoid person who always double check's everything",
     tools=[search, summarize, fetch, persist],

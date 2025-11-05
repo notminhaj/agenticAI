@@ -5,3 +5,12 @@
 - to "Document a markdown formatted weekly brief..."
 - Prompt affects which tools LLMs decide to call 
 - Because they are stochastic and every word has an attention value
+
+## ISSUE: I set the agent role to be a sarchastic researcher, however no sarchasm is found in the report
+- Where in the long chain of prompts is the agent shifting towards professionalism?
+- Why is any other prompt able to override the system (role) prompt?
+
+## Random decision the LLM makes on its own
+- I set the search tool's topic to "Agentic AI" by default
+- def search(topic: str = "Agentic AI", ...):
+- But the Agent searches similar topics like "Deep Learning" and "machine learning" by itself
