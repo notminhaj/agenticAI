@@ -214,15 +214,15 @@ def persist(results: list, folder: str = "."):
     os.makedirs(folder, exist_ok=True)
     md_path = os.path.join(folder, f"report_{timestamp}.md")
     with open(md_path, "w", encoding="utf-8") as f:
-        f.write(f"# Weekly AI Paper Brief  {timestamp}\\n\\n")
+        f.write(f"# Weekly AI Paper Brief – {timestamp}\n\n")
         for i, r in enumerate(results, 1):
-            f.write(f"### {i}) {r['title']}\\n")
-            f.write(f"{r['url']}\\n\\n")
-            f.write(f"{r['summary']}\\n\\n")
-            f.write("---\\n\\n")
+            f.write(f"### {i}) {r['title']}\n")
+            f.write(f"{r['url']}\n\n")
+            f.write(f"{r['summary']}\n\n")
+            f.write("---\n\n")
     jsonl_path = os.path.join(folder, f"runs_{timestamp}.jsonl")
     with open(jsonl_path, "w", encoding="utf-8") as f:
         for r in results:
-            f.write(json.dumps(r, ensure_ascii=False) + "\\n")
+            f.write(json.dumps(r, ensure_ascii=False) + "\n")
     print(f"Saved report: {md_path}")
     print(f"Saved raw data: {jsonl_path}")
