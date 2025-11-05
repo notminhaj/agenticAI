@@ -10,8 +10,8 @@ agent = Agent(
 )
 
 task = Task(
-    description="Create a weekly brief of the most important AI papers in the field",
-    expected_output="A structured, markdown formatted weekly brief of the most important AI papers in the field",
+    description="Create a weekly brief of the 3 most important AI papers in the field",
+    expected_output="Document a markdown formatted weekly brief of the most important AI papers in the field",
     agent=agent,
     verbose=True
 )
