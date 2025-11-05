@@ -1,5 +1,9 @@
 # Development Notes
 
+## ISSUE: This agent sure loves to blast tokens: 0.02 cents everytime I run main.py
+- When I check my logs, weirdly enough it sometimes uses GPT-4.1-mini even though I set the model to GPT-4o-mini
+- No solution yet
+
 ## ISSUE: Agent is not using the persist() tool and as a result, output is structureless
 - Changed expected output prompt from "A structured, markdown formatted weekly brief..."
 - to "Document a markdown formatted weekly brief..."
