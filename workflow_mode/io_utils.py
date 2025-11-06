@@ -22,6 +22,7 @@ from dotenv import load_dotenv   # Environment variable loading
 from datetime import datetime    # Date/time formatting for filenames
 import json             # JSON serialization for data export
 import os               # File system operations
+import inspect          # For detecting caller's file location
 
 # Load .env file from parent directory (project root)
 # This allows access to environment variables like API keys
@@ -141,7 +142,7 @@ def fetch(url: str, timeout: int = 10) -> dict:
     }
 
 
-def persist(results: list, folder: str = "."):
+def persist(results: list, folder: str = None):
     """
     Save summary results to both markdown and JSONL formats.
     
@@ -159,7 +160,7 @@ def persist(results: list, folder: str = "."):
             - summary (str): LLM-generated summary
             - tokens_in (int): Input tokens used
             - tokens_out (int): Output tokens used
-        folder (str): Directory to save files in. Default: current directory "."
+        folder (str): Directory to save files in. Default: None (auto-detects script directory)
         
     Returns:
         None (files are written to disk)
@@ -167,23 +168,34 @@ def persist(results: list, folder: str = "."):
     Note:
         The timestamp is generated using the current date (YYYY-MM-DD format).
         Files are overwritten if they already exist for the same date.
+        If folder is None, files are saved in the same directory as the calling script.
     """
     # ================================================
-    # Step 1: Generate timestamp for filename
+    # Step 1: Determine output folder
+    # ================================================
+    # If no folder specified, use the directory of the calling script
+    if folder is None:
+        # Get the caller's frame to find where the script is running from
+        caller_frame = inspect.stack()[1]
+        caller_file = caller_frame.filename
+        folder = str(Path(caller_file).parent)
+    
+    # ================================================
+    # Step 2: Generate timestamp for filename
     # ================================================
     # Create date string in YYYY-MM-DD format
     # Example: "2025-10-29"
     timestamp = datetime.now().strftime("%Y-%m-%d")
     
     # ================================================
-    # Step 2: Create output directory if needed
+    # Step 3: Create output directory if needed
     # ================================================
     # os.makedirs creates the directory structure if it doesn't exist
     # exist_ok=True prevents error if directory already exists
     os.makedirs(folder, exist_ok=True)
     
     # ================================================
-    # Step 3: Write markdown report
+    # Step 4: Write markdown report
     # ================================================
     # Construct filename with timestamp
     md_path = os.path.join(folder, f"report_{timestamp}.md")
@@ -208,7 +220,7 @@ def persist(results: list, folder: str = "."):
             f.write("---\n\n")
     
     # ================================================
-    # Step 4: Write JSONL data file
+    # Step 5: Write JSONL data file
     # ================================================
     # JSONL (JSON Lines) format: one JSON object per line
     # This format is common in data science and ML pipelines
@@ -222,7 +234,7 @@ def persist(results: list, folder: str = "."):
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
     
     # ================================================
-    # Step 5: Print confirmation
+    # Step 6: Print confirmation
     # ================================================
     print(f"Saved report: {md_path}")
     print(f"Saved raw data: {jsonl_path}")

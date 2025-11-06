@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 from pathlib import Path
 from dotenv import load_dotenv
 from crewai.tools import tool
+from typing import Optional
 
 env_path = Path(__file__).parent.parent / '.env'
 load_dotenv(env_path)
@@ -183,7 +184,7 @@ def fetch(url: str, timeout: int = 10) -> dict:
     return {"title": title.split('|')[0].strip(), "url": url, "raw_text": raw_text, "kind": kind}
 
 @tool
-def persist(results: list, folder: str = "."):
+def persist(results: list, folder: Optional[str] = None):
     """
     Save summary results to both markdown and JSONL formats.
     
@@ -201,7 +202,7 @@ def persist(results: list, folder: str = "."):
             - summary (str): LLM-generated summary
             - tokens_in (int): Input tokens used
             - tokens_out (int): Output tokens used
-        folder (str): Directory to save files in. Default: current directory "."
+        folder (str): Directory to save files in. Default: None (auto-detects script directory)
         
     Returns:
         None (files are written to disk)
@@ -209,9 +210,15 @@ def persist(results: list, folder: str = "."):
     Note:
         The timestamp is generated using the current date (YYYY-MM-DD format).
         Files are overwritten if they already exist for the same date.
+        If folder is None, files are saved in the same directory as the calling script.
     """
+    # If no folder specified, use the directory where this tools.py file is located
+    if folder is None:
+        folder = str(Path(__file__).parent)
+    
     timestamp = datetime.now().strftime("%Y-%m-%d")
     os.makedirs(folder, exist_ok=True)
+    
     md_path = os.path.join(folder, f"report_{timestamp}.md")
     with open(md_path, "w", encoding="utf-8") as f:
         f.write(f"# Weekly AI Paper Brief – {timestamp}\n\n")
@@ -220,6 +227,7 @@ def persist(results: list, folder: str = "."):
             f.write(f"{r['url']}\n\n")
             f.write(f"{r['summary']}\n\n")
             f.write("---\n\n")
+    
     jsonl_path = os.path.join(folder, f"runs_{timestamp}.jsonl")
     with open(jsonl_path, "w", encoding="utf-8") as f:
         for r in results:

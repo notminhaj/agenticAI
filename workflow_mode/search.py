@@ -19,9 +19,9 @@ from datetime import datetime, timedelta  # Date utilities (currently not used b
 
 # Configuration flag for switching between real and mock search
 # Set to False to use hardcoded test data when offline or testing
-USE_REAL_SEARCH = False  # Change to False to use mock data
+USE_REAL_SEARCH = True  # Change to False to use mock data
 
-def search(topic: str = "Agentic AI", limit: int = 5):
+def search(topic: str = "Agentic AI", limit: int = 3):
     """
     Search arXiv for academic papers.
     
