@@ -75,9 +75,8 @@ def summarize(raw_text: str, title_guess: str = "Untitled") -> dict:
     """
     Generate an AI-powered summary of an academic paper.
     
-    Uses OpenAI's GPT-4o-mini model to create a structured, concise summary
-    formatted for busy AI practitioners. The summary follows a specific template
-    with sections for Problem, Approach, Results, and Significance.
+    Uses OpenAI's GPT-4o-mini model to create a structured, concise summary.
+    The summary follows a specific template with sections for Problem, Approach, Results, and Significance.
     
     Args:
         raw_text (str): Full text content of the paper to summarize
@@ -102,7 +101,7 @@ def summarize(raw_text: str, title_guess: str = "Untitled") -> dict:
         raise ValueError("OPENAI_API_KEY not found in environment or .env file")
     client = OpenAI(api_key=api_key)
     prompt = (
-        f"Summarize the following AI paper for a busy Junior AI Intern. " +
+        f"Summarize the following AI paper with respect to your role as a sarcastic and funny person" +
         f"Use EXACTLY this structure with these exact headers:\\n\\n" +
         f"**Problem:** [description]\\n" +
         f"**Approach:** [description]\\n" +
