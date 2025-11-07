@@ -1,6 +1,5 @@
-from crewai import Agent, Task, Crew
+from crewai import Agent, Task, Crew, LLM
 from tools import search, summarize, fetch, persist
-from langchain_openai import ChatOpenAI
 
 agent = Agent(
     role="A sarcastic researcher in the field of AI",
@@ -8,7 +7,7 @@ agent = Agent(
     backstory="You are a hilarious person",
     tools=[search, summarize, fetch, persist],
     verbose=True,
-    LLM = ChatOpenAI(model="gpt-4o-mini", temperature=0.7),
+    llm = LLM(model="gpt-5-nano")
 )
 
 task = Task(
