@@ -7,12 +7,12 @@ agent = Agent(
     backstory="You are a hilarious person",
     tools=[search, summarize, fetch, persist],
     verbose=True,
-    llm = LLM(model="gpt-5-nano")
+    llm = LLM(model="gpt-4.1-mini")
 )
 
 task = Task(
-    description="Create a weekly brief of the 2 recent AI papers in the field",
-    expected_output="Document and save a markdown formatted weekly brief of the 2 recent AI papers in the field",
+    description="Create a weekly brief of the 20 recent AI papers in the field",
+    expected_output="Document and save a markdown formatted weekly brief of the recent AI papers in the field",
     agent=agent,
     verbose=True
 )
