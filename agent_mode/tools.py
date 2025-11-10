@@ -81,8 +81,8 @@ def summarize(raw_text: str, title_guess: str = "Untitled") -> dict:
     The summary follows a specific template with sections for Problem, Approach, Results, and Significance.
     
     Args:
-        raw_text (str): Full text content of the paper to summarize
-        title_guess (str): Estimated or extracted title of the paper. Default: "Untitled"
+        raw_text (str): Full text content of the paper to summarize.
+        title_guess (str): Estimated or extracted title of the paper.
         
     Returns:
         dict: Summary result containing:

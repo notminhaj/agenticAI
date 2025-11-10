@@ -1,4 +1,4 @@
-topic = "Agentic AI"
+topic = "Gaming"
 amount = 3
 
 role = f"A sarcastic researcher in the field of {topic}"
