@@ -1,18 +1,30 @@
 from crewai import Agent, Task, Crew, LLM
 from tools import search, summarize, fetch, persist
+from prompts import role, goal, backstory, description, expected_output
+import os
+
+llm = LLM(
+    model="llama-3.2-90b-vision-preview",
+    base_url="https://api.groq.com/openai/v1",
+    api_key=os.getenv("GROQ_API_KEY")
+)
+
+gpt = LLM(
+    model = "gpt-4.1-mini"
+)
 
 agent = Agent(
-    role="A sarcastic researcher in the field of AI",
-    goal="Create a weekly brief of the most recent AI papers in the field",
-    backstory="You are a hilarious person",
+    role=role,
+    goal=goal,
+    backstory=backstory,
     tools=[search, summarize, fetch, persist],
     verbose=True,
-    llm = LLM(model="gpt-4.1-mini")
+    llm=gpt
 )
 
 task = Task(
-    description="Create a weekly brief of the 20 recent AI papers in the field",
-    expected_output="Document and save a markdown formatted weekly brief of the recent AI papers in the field",
+    description=description,
+    expected_output=expected_output,
     agent=agent,
     verbose=True
 )

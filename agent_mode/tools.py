@@ -10,6 +10,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 from crewai.tools import tool
 from typing import Optional
+from prompts import role, goal, backstory, description
+
 
 env_path = Path(__file__).parent.parent / '.env'
 load_dotenv(env_path)
@@ -17,7 +19,7 @@ load_dotenv(env_path)
 USE_REAL_SEARCH = True
 
 @tool
-def search(topic: str = "Agentic AI", limit: int = 5):
+def search(topic: str, limit: int):
     """
     Search arXiv for academic papers.
     
@@ -25,8 +27,8 @@ def search(topic: str = "Agentic AI", limit: int = 5):
     of paper dictionaries with title, URL, source, and paper ID.
     
     Args:
-        topic (str): Search query keywords. Default: "Agentic AI"
-        limit (int): Maximum number of results to return. Default: 5
+        topic (str): Search query keywords.
+        limit (int): Maximum number of results to return.
         
     Returns:
         list: List of dictionaries, each containing:
@@ -75,7 +77,7 @@ def summarize(raw_text: str, title_guess: str = "Untitled") -> dict:
     """
     Generate an AI-powered summary of an academic paper.
     
-    Uses OpenAI's GPT-4o-mini model to create a structured, concise summary.
+    Uses OpenAI's GPT-4.1-mini model to create a structured, concise summary.
     The summary follows a specific template with sections for Problem, Approach, Results, and Significance.
     
     Args:
@@ -101,7 +103,10 @@ def summarize(raw_text: str, title_guess: str = "Untitled") -> dict:
         raise ValueError("OPENAI_API_KEY not found in environment or .env file")
     client = OpenAI(api_key=api_key)
     prompt = (
-        f"Summarize the following AI paper with respect to your role as a sarcastic and funny person" +
+        f"Your role is {role}" +
+        f"Your goal is {goal}" +
+        f"Your backstory is {backstory}" +
+        f"Your task is {description}"
         f"Use EXACTLY this structure with these exact headers:\\n\\n" +
         f"**Problem:** [description]\\n" +
         f"**Approach:** [description]\\n" +
