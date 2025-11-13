@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup             # HTML parsing and text extraction
 import re                                 # Regular expressions for text processing
 
 
-def search(topic: str = "Agentic AI", limit: int = 3):
+def search(topic: str, limit: int):
     """
     Search arXiv for academic papers.
     
@@ -15,8 +15,8 @@ def search(topic: str = "Agentic AI", limit: int = 3):
     of paper dictionaries with title, URL, source, and paper ID.
     
     Args:
-        topic (str): Search query keywords. Default: "Agentic AI"
-        limit (int): Maximum number of results to return. Default: 5
+        topic (str): Search query keywords.
+        limit (int): Maximum number of results to return, but times 2 for extra searches
         
     Returns:
         list: List of dictionaries, each containing:
@@ -38,7 +38,7 @@ def search(topic: str = "Agentic AI", limit: int = 3):
         params = {
             "search_query": f"all:{topic}",  # Search all fields for the topic
             "start": 0,                       # Start from first result (offset for pagination)
-            "max_results": limit              # Maximum number of results to return
+            "max_results": limit * 2            # Maximum number of results to return, times 2
         }
         
         # Set User-Agent header to identify our bot (courtesy to arXiv servers)
