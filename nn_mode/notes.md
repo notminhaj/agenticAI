@@ -9,3 +9,7 @@
 ## Note: Copied code straight from hf model page
 - Using cursor's agent mode to configure package versions
 - Modified code for my use case
+
+## ISSUE: When fetching returns blank documents, scoring them using NN breaks
+- Added guardrails
+- Now returns 0, as a result, better documents receive higher ranking
