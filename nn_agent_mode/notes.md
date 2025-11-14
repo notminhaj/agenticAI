@@ -9,3 +9,4 @@
 - So why NN agent mode?
 - To see if we can get better results, higher quality papers for the right costs
 - This is better than summarizing each document and then deciding which ones are the best
+- Agent also searches for more papers than manually requested.
