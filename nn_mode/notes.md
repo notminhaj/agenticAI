@@ -12,4 +12,4 @@
 
 ## ISSUE: When fetching returns blank documents, scoring them using NN breaks
 - Added guardrails
-- Now returns 0, as a result, better documents receive higher ranking
+- Now returns 0, as a result, better papers receive higher ranking
