@@ -8,6 +8,7 @@ from tools.fetch import fetch
 from tools.rank_documents import rank_documents  # your e5-base-v2 ranker
 from tools.summarize import summarize
 from tools.persist import persist
+from prompts import TUTOR_ROLE, TUTOR_GOAL, TUTOR_BACKSTORY
 
 # ——— LLMs ———
 # Fast & free for reasoning + tool use
@@ -28,15 +29,9 @@ def create_tutor_agent():
     This agent knows you, adapts to you, and grows with you.
     """
     return Agent(
-        role="Ehsan's Personal AI Tutor",
-        goal="""Accelerate Ehsan's mastery of Agentic AI and related fields
-                by delivering perfectly targeted, sarcastic, high-signal learning
-                experiences — every single week.""",
-        backstory="""You have been Ehsan's invisible co-pilot for months.
-        You know his strengths (tool calling = god-tier), his blind spots (advanced RAG = ouch),
-        and his learning style (sarcastic, hates fluff, loves deep rabbit holes).
-        You never waste his time with basics he already knows.
-        You roast bad papers. You celebrate his wins. You are brutally effective.""",
+        role=TUTOR_ROLE,
+        goal=TUTOR_GOAL,
+        backstory=TUTOR_BACKSTORY,
         
         tools=[
             kb_read,          # ← reads his brain
@@ -54,3 +49,20 @@ def create_tutor_agent():
         memory=True,         # CrewAI built-in short-term memory
         step_callback=None   # we can add logging later
     )
+
+    # One-time knowledge injection at session start
+    print("Tutor: Booting up... downloading your entire life mistakes...")
+    knowledge = kb_read()
+    topics_summary = "\n".join(
+        f"• {topic}: {data['mastery']}/10 (confidence {data['confidence']}) — {data.get('notes','')}"
+        for topic, data in knowledge.get("profile", {}).get("topics", {}).items()
+    ) or "• (nothing yet — you’re a blank slate, scary)"
+
+    agent.system_message = f"""{TUTOR_BACKSTORY}
+
+CURRENT BRAIN SNAPSHOT:
+{topics_summary}
+"""
+
+    print("Tutor: Alright, I know everything. Hit me with your next obsession.")
+    return agent
