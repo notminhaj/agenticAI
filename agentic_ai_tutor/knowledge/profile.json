@@ -1,0 +1,41 @@
+{
+  "updated_at": "2025-11-18T03:06:46Z",
+  "topics": {
+    "CrewAI agents": {
+      "mastery": 8.5,
+      "confidence": 9.0,
+      "last_reviewed": "2025-04-03",
+      "notes": "Solid on crews. Still debugging delegation deadlocks."
+    },
+    "sentence transformers": {
+      "mastery": 7.2,
+      "confidence": 7.5,
+      "last_reviewed": "2025-04-05",
+      "notes": "e5-base-v2 ranking works. Some fine-tuning experience."
+    },
+    "advanced RAG": {
+      "mastery": 6,
+      "confidence": 7.0,
+      "last_reviewed": "2025-11-18",
+      "notes": "Implemented a resume search engine"
+    },
+    "self-improving agents": {
+      "mastery": 2.0,
+      "confidence": 3.0,
+      "last_reviewed": null,
+      "notes": "Never heard of it."
+    },
+    "tool calling": {
+      "mastery": 7,
+      "confidence": 8,
+      "last_reviewed": "2025-04-04",
+      "notes": "Mastered sequential + conditional tool use."
+    },
+    "self-healing agents": {
+      "mastery": 0,
+      "confidence": 0,
+      "notes": "Never heard of it",
+      "last_reviewed": "2025-11-18"
+    }
+  }
+}

@@ -1,0 +1,126 @@
+[
+  {
+    "timestamp": "2025-03-28T14:22:17Z",
+    "event": "tutor_run",
+    "trigger": "weekly",
+    "main_topic": "Agentic AI",
+    "papers_fetched": 38,
+    "top_k_ranked": 5,
+    "summary_generated": true,
+    "quiz_included": true,
+    "notes": "First full run after refactor. NN ranking worked perfectly."
+  },
+  {
+    "timestamp": "2025-03-28T14:45:33Z",
+    "event": "quiz_completed",
+    "topic": "sentence transformers",
+    "score": 8.7,
+    "questions_asked": 5,
+    "mastery_before": 7.0,
+    "mastery_after": 7.2,
+    "confidence_before": 7.0,
+    "confidence_after": 7.5,
+    "notes": "Got contrastive loss question wrong → added note"
+  },
+  {
+    "timestamp": "2025-04-01T09:11:05Z",
+    "event": "knowledge_update",
+    "topic": "tool calling",
+    "field": "mastery",
+    "old_value": 9.0,
+    "new_value": 9.5,
+    "reason": "Successfully built conditional + parallel tool chain without delegation loops",
+    "source": "agent_self_assessment"
+  },
+  {
+    "timestamp": "2025-04-03T18:07:42Z",
+    "event": "tutor_run",
+    "trigger": "manual",
+    "main_topic": "advanced RAG",
+    "papers_fetched": 42,
+    "top_k_ranked": 6,
+    "summary_generated": true,
+    "quiz_included": false,
+    "notes": "Focused on HyDE and parent-child retrieval. Mastery still low — scheduled follow-up."
+  },
+  {
+    "timestamp": "2025-04-05T10:30:00Z",
+    "event": "knowledge_update",
+    "topic": "CrewAI agents",
+    "field": "notes",
+    "new_value": "Solid on multi-agent crews. Still debugging delegation deadlocks.",
+    "reason": "User manually clarified after reading CrewAI v0.35 changelog",
+    "source": "user_input"
+  },
+  {
+    "timestamp": "2025-04-05T10:31:15Z",
+    "event": "system",
+    "action": "profile_updated",
+    "updated_at": "2025-04-05T10:00:00Z",
+    "topics_modified": [
+      "CrewAI agents",
+      "sentence transformers"
+    ],
+    "notes": "kb_update() tool executed successfully"
+  },
+  {
+    "timestamp": "2025-11-18T03:06:46Z",
+    "event": "knowledge_update",
+    "topic": "advanced RAG",
+    "field": "mastery",
+    "old_value": 3.0,
+    "new_value": 6.5,
+    "reason": "Successfully built and tested advanced RAG pipeline",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-18T03:06:46Z",
+    "event": "knowledge_update",
+    "topic": "advanced RAG",
+    "field": "confidence",
+    "old_value": 4.0,
+    "new_value": 7.0,
+    "reason": "Successfully built and tested advanced RAG pipeline",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-18T03:06:46Z",
+    "event": "knowledge_update",
+    "topic": "advanced RAG",
+    "field": "notes",
+    "old_value": "Know theory. Zero hands-on with HyDE, parent-child, or routing.",
+    "new_value": "Finally implemented HyDE + parent-child retrieval. Works!",
+    "reason": "Successfully built and tested advanced RAG pipeline",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-18T03:06:46Z",
+    "event": "knowledge_update",
+    "topic": "self-healing agents",
+    "field": "mastery",
+    "old_value": null,
+    "new_value": 4.0,
+    "reason": "First implementation of reflection loop",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-18T03:06:46Z",
+    "event": "knowledge_update",
+    "topic": "self-healing agents",
+    "field": "confidence",
+    "old_value": null,
+    "new_value": 5.0,
+    "reason": "First implementation of reflection loop",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-18T03:06:46Z",
+    "event": "knowledge_update",
+    "topic": "self-healing agents",
+    "field": "notes",
+    "old_value": null,
+    "new_value": "Read about Reflexion and STaR. Built simple version.",
+    "reason": "First implementation of reflection loop",
+    "source": "agent"
+  }
+]
