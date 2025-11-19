@@ -1,52 +1,58 @@
 {
-  "updated_at": "2025-11-19T04:01:26Z",
+  "updated_at": "2025-11-19T05:20:45Z",
   "topics": {
     "CrewAI agents": {
-      "mastery": 8.5,
-      "confidence": 9.0,
-      "last_reviewed": "2025-04-03",
-      "notes": "Solid on crews. Still debugging delegation deadlocks."
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "last_reviewed": "2025-11-19",
+      "notes": "User admitted to cheating. Resetting mastery and confidence to zero to reflect going backwards."
     },
     "sentence transformers": {
-      "mastery": 7.2,
-      "confidence": 7.5,
-      "last_reviewed": "2025-04-05",
-      "notes": "e5-base-v2 ranking works. Some fine-tuning experience."
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "last_reviewed": "2025-11-19",
+      "notes": "User admitted to cheating. Resetting mastery and confidence to zero to reflect going backwards."
     },
     "advanced RAG": {
-      "mastery": 6,
-      "confidence": 7.0,
-      "last_reviewed": "2025-11-18",
-      "notes": "Implemented a resume search engine"
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "last_reviewed": "2025-11-19",
+      "notes": "User admitted to cheating. Resetting mastery and confidence to zero to reflect going backwards."
     },
     "self-improving agents": {
-      "mastery": 3.5,
-      "confidence": 4.5,
-      "last_reviewed": "2025-11-18",
-      "notes": "Reviewed papers on RL, multi-agent communication, and self-supervised learning for autonomous improvement."
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "last_reviewed": "2025-11-19",
+      "notes": "User admitted to cheating. Resetting mastery and confidence to zero to reflect going backwards."
     },
     "tool calling": {
-      "mastery": 7,
-      "confidence": 8,
-      "last_reviewed": "2025-04-04",
-      "notes": "Mastered sequential + conditional tool use."
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "last_reviewed": "2025-11-19",
+      "notes": "User admitted to cheating. Resetting mastery and confidence to zero to reflect going backwards."
     },
     "self-healing agents": {
-      "mastery": 5.0,
-      "confidence": 6.0,
-      "notes": "Gained understanding from recent papers on dynamic RL-based recovery strategies and message-passing network self-healing mechanisms.",
-      "last_reviewed": "2025-11-18"
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "notes": "User admitted to cheating. Resetting mastery and confidence to zero to reflect going backwards.",
+      "last_reviewed": "2025-11-19"
     },
     "Agentic AI": {
-      "mastery": 7.5,
-      "confidence": 8.0,
-      "notes": "Expanded understanding of reliability challenges and provenance of agentic interactions from recent papers. Ready to apply this knowledge to practical agent coordination workflows.",
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "notes": "User admitted to cheating. Resetting mastery and confidence to zero to reflect going backwards.",
       "last_reviewed": "2025-11-19"
     },
     "large language models": {
-      "mastery": 7.5,
-      "confidence": 8.0,
-      "notes": "Recent research highlights that despite remarkable performance on language tasks, LLMs still struggle with basic character composition understanding, failing simple tasks humans ace. Additionally, benchmarks for LLM causal reasoning often rely on domain knowledge retrieval, questioning their validity. New work proposes criteria for better causal reasoning benchmarks incorporating true interventional and counterfactual reasoning. This signals ongoing challenges in foundational and higher-level reasoning capabilities of LLMs.",
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "notes": "User admitted to cheating. Resetting mastery and confidence to zero to reflect going backwards.",
+      "last_reviewed": "2025-11-19"
+    },
+    "agentic RAG": {
+      "mastery": 6.0,
+      "confidence": 6.0,
+      "notes": "Researchers are embedding autonomous AI agents into retrieval-augmented generation pipelines to enhance adaptability, scalability, and context awareness. They focus on dynamic retrieval strategy management, iterative refinement of context, multiagent collaboration, and tool use for complex workflows. Applications span healthcare, finance, and education. Challenges include scaling, ethical decision-making, and performance optimization. Recent surveys provide taxonomies of architectures, practical implementation strategies, and highlight the integration of agentic design patterns such as reflection, planning, and collaboration frameworks. This knowledge was updated based on a comprehensive 2025 survey paper on Agentic RAG.",
       "last_reviewed": "2025-11-19"
     }
   }
