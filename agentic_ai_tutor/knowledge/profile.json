@@ -1,5 +1,5 @@
 {
-  "updated_at": "2025-11-19T03:20:44Z",
+  "updated_at": "2025-11-19T04:01:26Z",
   "topics": {
     "CrewAI agents": {
       "mastery": 8.5,
@@ -41,6 +41,12 @@
       "mastery": 7.5,
       "confidence": 8.0,
       "notes": "Expanded understanding of reliability challenges and provenance of agentic interactions from recent papers. Ready to apply this knowledge to practical agent coordination workflows.",
+      "last_reviewed": "2025-11-19"
+    },
+    "large language models": {
+      "mastery": 7.5,
+      "confidence": 8.0,
+      "notes": "Recent research highlights that despite remarkable performance on language tasks, LLMs still struggle with basic character composition understanding, failing simple tasks humans ace. Additionally, benchmarks for LLM causal reasoning often rely on domain knowledge retrieval, questioning their validity. New work proposes criteria for better causal reasoning benchmarks incorporating true interventional and counterfactual reasoning. This signals ongoing challenges in foundational and higher-level reasoning capabilities of LLMs.",
       "last_reviewed": "2025-11-19"
     }
   }

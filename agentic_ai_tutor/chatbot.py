@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 from crewai import Agent, Task, Crew
 from agents.tutor_agent import create_tutor_agent
-from prompts import get_chatbot_task_description, CHATBOT_EXPECTED_OUTPUT
+from prompts import CHATBOT_EXPECTED_OUTPUT
 
 # Create the persistent tutor
 tutor = create_tutor_agent()
@@ -25,7 +25,7 @@ while True:
         agent=tutor
     )
 
-    crew = Crew(agents=[tutor], tasks=[task], verbose=1)
+    crew = Crew(agents=[tutor], tasks=[task], verbose=1, tracing=True)
     response = crew.kickoff()
 
     print(f"\nTutor: {response}\n")
