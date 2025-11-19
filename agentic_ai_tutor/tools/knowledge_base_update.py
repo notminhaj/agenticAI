@@ -8,8 +8,8 @@ from crewai.tools import tool
 def kb_update(updates: Dict[str, Any]) -> Dict[str, Any]:
     """
     Updates the user's knowledge profile with new mastery levels, confidence, notes, or new topics. 
-    Also logs the change to timeline.json for full history. Use this whenever you detect learning, 
-    correct a misconception, or the user tells you something new.
+    Also logs the change to timeline.json for full history. You MUST use this whenever you detect learning, 
+    correct a misconception, provide the user with any information, or the user tells you something new.
     
     Args:
         updates (dict): Dictionary containing at least:

@@ -11,14 +11,6 @@ from tools.persist import persist
 from prompts import TUTOR_ROLE, TUTOR_GOAL, TUTOR_BACKSTORY
 
 # ——— LLMs ———
-# Fast & free for reasoning + tool use
-GROQ_LLM = LLM(
-    model="llama-3.2-90b-vision-preview",
-    base_url="https://api.groq.com/openai/v1",
-    api_key=os.getenv("GROQ_API_KEY"),
-    temperature=0.7
-)
-
 # High-quality for final summaries (optional — you can swap to Groq too)
 GPT_LLM = LLM(model="gpt-4.1-mini")
 
