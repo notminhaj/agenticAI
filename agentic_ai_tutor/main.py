@@ -1,4 +1,5 @@
 # main.py
+# Ignore this file, it's outdated
 import os
 from datetime import datetime
 from crewai import Task, Crew
