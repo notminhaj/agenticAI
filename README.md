@@ -57,7 +57,7 @@ CrewAI agent decides:
 - when to call tools  
 - how to update the knowledge base  
 
-### **NN Mode**
+### **NN Mode/s**
 Neural network scoring ensures:
 - low-quality papers are filtered  
 - the agent only summarizes the most relevant content  
