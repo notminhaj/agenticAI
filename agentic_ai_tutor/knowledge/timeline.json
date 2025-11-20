@@ -582,5 +582,85 @@
     "new_value": "Researchers are embedding autonomous AI agents into retrieval-augmented generation pipelines to enhance adaptability, scalability, and context awareness. They focus on dynamic retrieval strategy management, iterative refinement of context, multiagent collaboration, and tool use for complex workflows. Applications span healthcare, finance, and education. Challenges include scaling, ethical decision-making, and performance optimization. Recent surveys provide taxonomies of architectures, practical implementation strategies, and highlight the integration of agentic design patterns such as reflection, planning, and collaboration frameworks. This knowledge was updated based on a comprehensive 2025 survey paper on Agentic RAG.",
     "reason": "Added recent comprehensive research activities in agentic RAG based on a 2025 survey paper",
     "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-20T04:22:47Z",
+    "event": "knowledge_update",
+    "topic": "Agentic AI",
+    "field": "mastery",
+    "old_value": 0.0,
+    "new_value": 4.0,
+    "reason": "Updated user knowledge on Agentic AI with recent expert sourced info from IBM 2025 article",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-20T04:22:47Z",
+    "event": "knowledge_update",
+    "topic": "Agentic AI",
+    "field": "confidence",
+    "old_value": 0.0,
+    "new_value": 6.0,
+    "reason": "Updated user knowledge on Agentic AI with recent expert sourced info from IBM 2025 article",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-20T04:22:47Z",
+    "event": "knowledge_update",
+    "topic": "Agentic AI",
+    "field": "notes",
+    "old_value": "User admitted to cheating. Resetting mastery and confidence to zero to reflect going backwards.",
+    "new_value": "Agentic AI consists of autonomous AI agents capable of performing complex, goal-driven tasks with limited human oversight. Key features include multiagent coordination, proactive tool use, adaptability, and intuitive natural language interfaces. Advantages include autonomy, proactivity, specialization, adaptability, and human-like interaction. Real-world examples span finance, healthcare, cybersecurity, autonomous vehicles, and supply chain. Challenges include risks from poorly designed reward functions, unintended behaviors, bottlenecks in multiagent systems, and failures cascading through agent teams. This info is based on a 2-day-old IBM article giving a comprehensive state-of-the-art overview of Agentic AI and its emerging applications.",
+    "reason": "Updated user knowledge on Agentic AI with recent expert sourced info from IBM 2025 article",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-20T04:48:44Z",
+    "event": "knowledge_update",
+    "topic": "Agentic AI",
+    "field": "mastery",
+    "old_value": 4.0,
+    "new_value": 5.0,
+    "reason": "User confirmed understanding, boosting mastery and confidence after recent comprehensive update",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-20T04:48:44Z",
+    "event": "knowledge_update",
+    "topic": "Agentic AI",
+    "field": "confidence",
+    "old_value": 6.0,
+    "new_value": 7.0,
+    "reason": "User confirmed understanding, boosting mastery and confidence after recent comprehensive update",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-20T05:04:56Z",
+    "event": "knowledge_update",
+    "topic": "Model Context Protocol",
+    "field": "mastery",
+    "old_value": null,
+    "new_value": 5.0,
+    "reason": "User asked for latest info on model context protocol; provided sourced recent definition from official site.",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-20T05:04:56Z",
+    "event": "knowledge_update",
+    "topic": "Model Context Protocol",
+    "field": "confidence",
+    "old_value": null,
+    "new_value": 7.0,
+    "reason": "User asked for latest info on model context protocol; provided sourced recent definition from official site.",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-20T05:04:56Z",
+    "event": "knowledge_update",
+    "topic": "Model Context Protocol",
+    "field": "notes",
+    "old_value": null,
+    "new_value": "MCP is an open-source standard to connect AI models like ChatGPT or Claude to external data sources, tools, and workflows. Enables advanced AI actions like calendar access, database querying, and code generation. Benefits all ecosystem players: developers, AI agents, and users.",
+    "reason": "User asked for latest info on model context protocol; provided sourced recent definition from official site.",
+    "source": "agent"
   }
 ]
