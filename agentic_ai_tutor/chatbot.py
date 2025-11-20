@@ -12,7 +12,8 @@ print("Your sarcastic AI tutor is online.")
 print("Type 'quit' to exit. Type 'brief' for weekly summary.\n")
 
 while True:
-    user_input = input("You: ").strip()
+    print("You: ", end="", flush=True)
+    user_input = input().strip()
     if user_input.lower() in ["quit", "exit", "bye"]:
         print("Tutor: Catch you later, genius.")
         break
@@ -28,7 +29,7 @@ while True:
         agent=tutor
     )
 
-    crew = Crew(agents=[tutor], tasks=[task], verbose=1, tracing=True)
+    crew = Crew(agents=[tutor], tasks=[task], verbose=1, tracing=True) # Set verbose and tracing to False if you don't want to see them
     response = crew.kickoff()
 
     print(f"\nTutor: {response}\n")

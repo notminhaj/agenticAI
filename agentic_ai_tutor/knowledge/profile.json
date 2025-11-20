@@ -1,5 +1,5 @@
 {
-  "updated_at": "2025-11-20T05:04:56Z",
+  "updated_at": "2025-11-20T23:43:49Z",
   "topics": {
     "CrewAI agents": {
       "mastery": 0.0,
@@ -38,9 +38,9 @@
       "last_reviewed": "2025-11-19"
     },
     "Agentic AI": {
-      "mastery": 5.0,
-      "confidence": 7.0,
-      "notes": "Agentic AI consists of autonomous AI agents capable of performing complex, goal-driven tasks with limited human oversight. Key features include multiagent coordination, proactive tool use, adaptability, and intuitive natural language interfaces. Advantages include autonomy, proactivity, specialization, adaptability, and human-like interaction. Real-world examples span finance, healthcare, cybersecurity, autonomous vehicles, and supply chain. Challenges include risks from poorly designed reward functions, unintended behaviors, bottlenecks in multiagent systems, and failures cascading through agent teams. This info is based on a 2-day-old IBM article giving a comprehensive state-of-the-art overview of Agentic AI and its emerging applications.",
+      "mastery": 5.5,
+      "confidence": 7.5,
+      "notes": "Reinforced understanding of Agentic AI as comprising autonomous, proactive multi-agent systems using natural language and advanced coordination to solve complex problems with limited human oversight, based on IBM 2025 state of the art overview.",
       "last_reviewed": "2025-11-20"
     },
     "large language models": {
@@ -59,6 +59,18 @@
       "mastery": 5.0,
       "confidence": 7.0,
       "notes": "MCP is an open-source standard to connect AI models like ChatGPT or Claude to external data sources, tools, and workflows. Enables advanced AI actions like calendar access, database querying, and code generation. Benefits all ecosystem players: developers, AI agents, and users.",
+      "last_reviewed": "2025-11-20"
+    },
+    "quantum mechanics": {
+      "mastery": 3.0,
+      "confidence": 4.0,
+      "notes": "Recent 2025 breakthroughs include quantum computers simulating nuclear physics on 100+ qubits, tiny quantum clocks revealing surprising energy costs, surpassing Heisenberg's measurement limits, topological insulator-generated terahertz light, advanced quantum sensor networks for dark matter detection, and discovery of novel electron quantum states. All represent significant advances pushing quantum tech and fundamental understanding.",
+      "last_reviewed": "2025-11-20"
+    },
+    "biology": {
+      "mastery": 0.5,
+      "confidence": 3.0,
+      "notes": "Searched multiple trusted scientific databases and news sources for latest biology discoveries in 2025 but no notable new breakthroughs found at this time. Will continue monitoring and update when available.",
       "last_reviewed": "2025-11-20"
     }
   }

@@ -26,3 +26,7 @@ cp .env.example .env
 
 # 5. Run the tutor
 python chatbot.py
+
+# 6. Look around (optional, replace the hyphens "----" with your mode choice: agent_mode, workflow_mode etc.)
+cd ----_mode
+python main.py
