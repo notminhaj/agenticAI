@@ -5,18 +5,20 @@ from typing import List
 import openai
 from dotenv import load_dotenv
 
+from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+project_root = Path(__file__).resolve().parents[2]  # agenticAI/
+env_path = project_root / ".env"
+print(f"Loading .env from: {env_path}")
+load_dotenv(env_path, override=True)
+print("OPENAI_API_KEY:", os.getenv("OPENAI_API_KEY"))
+
 ROOT = Path(__file__).resolve().parents[1]
 KB_JSON_PATH = Path(__file__).resolve().parent / "knowledge_base.json"
 NOTES_DIR = Path(__file__).resolve().parent / "notes"
 INDEX_PATH = Path(__file__).resolve().parent / "embeddings" / "kb_index.json"
-
-# Load environment from root-level .env
-dotenv_path = ROOT / ".env"
-load_dotenv(dotenv_path, override=True)
-
-# Debugging
-print(f"Loading .env from: {dotenv_path}")
-print("OPENAI_API_KEY:", os.getenv("OPENAI_API_KEY"))
 
 EMBED_MODEL = "text-embedding-3-small"
 MAX_CONTENT_CHARS = 6000

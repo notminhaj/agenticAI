@@ -9,8 +9,7 @@ from tools.fetch import fetch
 from tools.rank_documents import rank_documents  # your e5-base-v2 ranker
 from tools.summarize import summarize
 from tools.persist import persist
-from tools.kb_search import semantic_note_search
-from tools.kb_search import read_note
+from tools.kb_search import semantic_note_search, read_note
 from prompts import TUTOR_ROLE, TUTOR_GOAL, TUTOR_BACKSTORY
 
 # ——— LLMs ———

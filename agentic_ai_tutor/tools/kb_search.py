@@ -42,6 +42,9 @@ def semantic_note_search(query: str, top_k: int = 5) -> List[dict]:
             - note_path (str)
             - score (float)
             - preview (str): first 200 chars of the note
+
+    Note:
+        After using this tool, highly recommended you use the read_note tool for a better understanding of the user's knowledge.
     """
     if not INDEX_PATH.exists():
         return [{"error": f"KB index not found at {INDEX_PATH}. Run build_kb_index.py first."}]
@@ -79,3 +82,16 @@ def semantic_note_search(query: str, top_k: int = 5) -> List[dict]:
 
     scored.sort(key=lambda r: r["score"], reverse=True)
     return scored[:top_k]
+
+
+@tool
+def read_note(note_path: str) -> str:
+    """
+    Read the full content of a markdown note from the knowledge base.
+    Args:
+        note_path (str): Relative path, as returned by semantic_note_search.
+    """
+    path = ROOT / note_path
+    if not path.exists():
+        return f"Note not found: {note_path}"
+    return path.read_text(encoding="utf-8")

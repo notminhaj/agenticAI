@@ -1,211 +1,233 @@
 import json
+import os
+import numpy as np
 from pathlib import Path
 from datetime import datetime, timezone
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from crewai.tools import tool
 
+from sentence_transformers import SentenceTransformer
+
+# -------------------------------
+# GLOBALS
+# -------------------------------
+EMBED_MODEL = SentenceTransformer("intfloat/e5-base-v2")
+
+# Base paths
+BASE_DIR = Path(__file__).parent.parent
+KNOWLEDGE_DIR = BASE_DIR / "knowledge"
+
+PROFILE_PATH = KNOWLEDGE_DIR / "profile.json"
+TIMELINE_PATH = KNOWLEDGE_DIR / "timeline.json"
+EMBED_INDEX_PATH = KNOWLEDGE_DIR / "embeddings.json"
+NOTES_DIR = KNOWLEDGE_DIR / "notes"
+
+# Ensure dirs exist
+KNOWLEDGE_DIR.mkdir(parents=True, exist_ok=True)
+NOTES_DIR.mkdir(parents=True, exist_ok=True)
+
+
+# -------------------------------------------------------
+# 🔥 NEW: Embed text with e5 instruction style formatting
+# -------------------------------------------------------
+def embed_text(text: str) -> List[float]:
+    prompt = f"passage: {text}"
+    vec = EMBED_MODEL.encode(prompt, convert_to_numpy=True)
+    return vec.tolist()
+
+
+# -------------------------------------------------------
+# 🔥 NEW: Save note text to markdown file
+# -------------------------------------------------------
+def save_note_markdown(topic: str, text: str) -> str:
+    safe_name = topic.replace(" ", "_").lower()
+    file_path = NOTES_DIR / f"{safe_name}.md"
+
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(f"# {topic}\n\n{text}\n")
+
+    return str(file_path)
+
+
+# -------------------------------------------------------
+# 🔥 NEW: Update embedding index for topic
+# -------------------------------------------------------
+def update_embedding(topic: str, text: str):
+    vec = embed_text(text)
+
+    if EMBED_INDEX_PATH.exists():
+        with open(EMBED_INDEX_PATH, "r", encoding="utf-8") as f:
+            index = json.load(f)
+    else:
+        index = {}
+
+    index[topic] = vec
+
+    with open(EMBED_INDEX_PATH, "w", encoding="utf-8") as f:
+        json.dump(index, f, indent=2)
+
+    return vec
+
+
+# -------------------------------------------------------
+# 🔥 NEW TOOL: Retrieve top-K relevant topics
+# -------------------------------------------------------
+@tool
+def kb_retrieve(query: str, k: int = 5) -> Dict[str, Any]:
+    """
+    Retrieves the top-K most relevant topics from the hybrid knowledge base.
+    Uses embedding similarity over stored topic notes.
+    """
+
+    if not EMBED_INDEX_PATH.exists():
+        return {
+            "status": "error",
+            "message": "No embedding index found.",
+            "results": []
+        }
+
+    # Load index
+    with open(EMBED_INDEX_PATH, "r", encoding="utf-8") as f:
+        index = json.load(f)
+
+    # Embed query
+    query_vec = np.array(embed_text(query))
+
+    # Compute cosine similarities
+    results = []
+    for topic, vec in index.items():
+        vec = np.array(vec)
+        sim = np.dot(query_vec, vec) / (np.linalg.norm(query_vec) * np.linalg.norm(vec))
+        results.append({"topic": topic, "similarity": float(sim)})
+
+    # Sort + pick top-K
+    results = sorted(results, key=lambda x: x["similarity"], reverse=True)[:k]
+
+    return {
+        "status": "success",
+        "query": query,
+        "results": results
+    }
+
+
+# -------------------------------------------------------
+# ORIGINAL UPDATE TOOL (expanded to integrate embeddings)
+# -------------------------------------------------------
 @tool
 def kb_update(updates: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Updates the user's knowledge profile with new mastery levels, confidence, notes, or new topics. 
-    Also logs the change to timeline.json for full history.
-    You MUST consider using this tool after presenting any piece of information to the user.
-    Use this ESPECIALLY when you detect learning, correct a misconception,
-    provide the user with any information, or the user tells you something new.
-    
-    Args:
-        updates (dict): Dictionary containing at least:
-            - topic (str, required): The topic name to update
-            - mastery (float, optional): Mastery level (0-10)
-            - confidence (float, optional): Confidence level (0-10)
-            - notes (str, optional): Notes about the topic
-            - reason (str, optional): Reason for the update (for timeline)
-            - source (str, optional): "agent" or "user" (default: "agent")
-    
-    Returns:
-        dict: Update result containing:
-            - status (str): "success" or "error"
-            - message (str): Human-readable status message
-            - updated_topic (str): The topic that was updated
-            
-    Note:
-        If topic doesn't exist, it will be created with default values.
-        Only provided fields will be updated (others remain unchanged).
-        Never crashes - always returns a valid dictionary.
+    Updates the user's knowledge profile (mastery, confidence, notes)
+    AND writes full notes to markdown + updates embedding index.
     """
-    # Get the base directory (agentic_ai_tutor folder)
-    base_dir = Path(__file__).parent.parent
-    knowledge_dir = base_dir / "knowledge"
-    profile_path = knowledge_dir / "profile.json"
-    timeline_path = knowledge_dir / "timeline.json"
-    
-    # Validate required fields
+
     if not isinstance(updates, dict):
-        return {
-            "status": "error",
-            "message": "Updates must be a dictionary",
-            "updated_topic": None
-        }
-    
+        return {"status": "error", "message": "Updates must be a dictionary"}
+
     topic = updates.get("topic")
-    if not topic or not isinstance(topic, str):
-        return {
-            "status": "error",
-            "message": "Topic is required and must be a string",
-            "updated_topic": None
-        }
-    
-    # Ensure knowledge directory exists
-    knowledge_dir.mkdir(parents=True, exist_ok=True)
-    
-    # Load current profile
-    if profile_path.exists():
+    if not topic:
+        return {"status": "error", "message": "Missing 'topic' field"}
+
+    # Load or create profile
+    if PROFILE_PATH.exists():
         try:
-            with open(profile_path, 'r', encoding='utf-8') as f:
+            with open(PROFILE_PATH, "r", encoding="utf-8") as f:
                 profile_data = json.load(f)
-        except json.JSONDecodeError:
-            # If JSON is corrupted, start fresh
-            profile_data = {"updated_at": None, "topics": {}}
-        except Exception as e:
-            return {
-                "status": "error",
-                "message": f"Error reading profile: {str(e)}",
-                "updated_topic": topic
-            }
+        except Exception:
+            profile_data = {"topics": {}}
     else:
-        profile_data = {"updated_at": None, "topics": {}}
-    
-    # Ensure topics dict exists
+        profile_data = {"topics": {}}
+
     if "topics" not in profile_data:
         profile_data["topics"] = {}
-    
-    # Get or create topic entry (preserve original topic name as key)
-    topic_entry = profile_data["topics"].get(topic, {})
-    
-    # Track which fields changed
+
+    # Get or create topic entry
+    entry = profile_data["topics"].get(topic, {})
     changes = []
-    
-    # Update mastery if provided
+
+    # Update mastery
     if "mastery" in updates:
-        new_mastery = updates["mastery"]
-        if isinstance(new_mastery, (int, float)):
-            new_mastery = float(new_mastery)
-            # Clamp to 0-10 range
-            new_mastery = max(0.0, min(10.0, new_mastery))
-            old_mastery = topic_entry.get("mastery")
-            if old_mastery != new_mastery:
-                topic_entry["mastery"] = new_mastery
-                changes.append({
-                    "field": "mastery",
-                    "old_value": old_mastery,
-                    "new_value": new_mastery
-                })
-    
-    # Update confidence if provided
+        new = float(updates["mastery"])
+        new = max(0, min(10, new))
+        old = entry.get("mastery")
+        if old != new:
+            entry["mastery"] = new
+            changes.append(("mastery", old, new))
+
+    # Update confidence
     if "confidence" in updates:
-        new_confidence = updates["confidence"]
-        if isinstance(new_confidence, (int, float)):
-            new_confidence = float(new_confidence)
-            # Clamp to 0-10 range
-            new_confidence = max(0.0, min(10.0, new_confidence))
-            old_confidence = topic_entry.get("confidence")
-            if old_confidence != new_confidence:
-                topic_entry["confidence"] = new_confidence
-                changes.append({
-                    "field": "confidence",
-                    "old_value": old_confidence,
-                    "new_value": new_confidence
-                })
-    
-    # Update notes if provided
+        new = float(updates["confidence"])
+        new = max(0, min(10, new))
+        old = entry.get("confidence")
+        if old != new:
+            entry["confidence"] = new
+            changes.append(("confidence", old, new))
+
+    # Update notes (also triggers markdown & embedding updates)
     if "notes" in updates:
-        new_notes = updates.get("notes")
-        if isinstance(new_notes, str):
-            old_notes = topic_entry.get("notes")
-            if old_notes != new_notes:
-                topic_entry["notes"] = new_notes
-                changes.append({
-                    "field": "notes",
-                    "old_value": old_notes,
-                    "new_value": new_notes
-                })
-    
-    # Update last_reviewed to today if any field changed
+        new = updates["notes"]
+        if isinstance(new, str):
+            old = entry.get("notes")
+            if old != new:
+                entry["notes"] = new
+                changes.append(("notes", old, new))
+
+                # SAVE MARKDOWN
+                md_path = save_note_markdown(topic, new)
+                entry["note_file"] = md_path
+
+                # UPDATE EMBEDDING
+                update_embedding(topic, new)
+
+    # Update last reviewed
     if changes:
-        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        topic_entry["last_reviewed"] = today
-    
-    # Save updated topic back to profile
-    profile_data["topics"][topic] = topic_entry
-    
-    # Update profile timestamp
-    profile_data["updated_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    
-    # Save profile.json
-    try:
-        with open(profile_path, 'w', encoding='utf-8') as f:
-            json.dump(profile_data, f, indent=2, ensure_ascii=False)
-    except Exception as e:
-        return {
-            "status": "error",
-            "message": f"Error saving profile: {str(e)}",
-            "updated_topic": topic
-        }
-    
-    # Load timeline for logging
-    if timeline_path.exists():
-        try:
-            with open(timeline_path, 'r', encoding='utf-8') as f:
-                timeline_data = json.load(f)
-            if not isinstance(timeline_data, list):
-                timeline_data = []
-        except (json.JSONDecodeError, Exception):
-            timeline_data = []
+        entry["last_reviewed"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+    # Save profile
+    profile_data["topics"][topic] = entry
+    with open(PROFILE_PATH, "w", encoding="utf-8") as f:
+        json.dump(profile_data, f, indent=2, ensure_ascii=False)
+
+    # Timeline logging
+    if changes:
+        if TIMELINE_PATH.exists():
+            try:
+                with open(TIMELINE_PATH, "r", encoding="utf-8") as f:
+                    timeline = json.load(f)
+                if not isinstance(timeline, list):
+                    timeline = []
+            except:
+                timeline = []
+        else:
+            timeline = []
+
+        timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        reason = updates.get("reason", "Knowledge profile updated")
+        source = updates.get("source", "agent")
+
+        for (field, old, new) in changes:
+            timeline.append({
+                "timestamp": timestamp,
+                "event": "knowledge_update",
+                "topic": topic,
+                "field": field,
+                "old_value": old,
+                "new_value": new,
+                "reason": reason,
+                "source": source
+            })
+
+        with open(TIMELINE_PATH, "w", encoding="utf-8") as f:
+            json.dump(timeline, f, indent=2)
+
+    # Summary
+    if changes:
+        updated_fields = ", ".join([c[0] for c in changes])
+        msg = f"Updated {topic}: {updated_fields}"
     else:
-        timeline_data = []
-    
-    # Append timeline events for each change
-    reason = updates.get("reason", "Knowledge profile updated")
-    source = updates.get("source", "agent")
-    
-    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    
-    for change in changes:
-        event = {
-            "timestamp": timestamp,
-            "event": "knowledge_update",
-            "topic": topic,
-            "field": change["field"],
-            "old_value": change["old_value"],
-            "new_value": change["new_value"],
-            "reason": reason,
-            "source": source
-        }
-        timeline_data.append(event)
-    
-    # Save timeline.json
-    if changes:
-        try:
-            with open(timeline_path, 'w', encoding='utf-8') as f:
-                json.dump(timeline_data, f, indent=2, ensure_ascii=False)
-        except Exception as e:
-            # Profile was saved, but timeline failed - still return success with warning
-            return {
-                "status": "success",
-                "message": f"Profile updated, but timeline logging failed: {str(e)}",
-                "updated_topic": topic
-            }
-    
-    # Return success
-    if changes:
-        fields_updated = [c["field"] for c in changes]
-        message = f"Updated {topic}: {', '.join(fields_updated)}"
-    else:
-        message = f"No changes made to {topic} (values unchanged or invalid)"
-    
+        msg = f"No changes to {topic}"
+
     return {
         "status": "success",
-        "message": message,
+        "message": msg,
         "updated_topic": topic
     }
-
