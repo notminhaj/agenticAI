@@ -1,0 +1,53 @@
+* [33m0320171[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m groundwork for knowledge base update
+[31m|[m * [33mbed63bf[m[33m ([m[1;32mgui-testing[m[33m)[m Working GUI but search is so bad, couldn't find any arXiv papers on sentence based searches
+[31m|[m[31m/[m  
+* [33mf4755bf[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Added note in agent_ai_tutor/main.py
+* [33m627a27e[m Interesting agent abstinence
+* [33m0cb67bd[m Restore agent_mode folder
+* [33m339492c[m Updated requirements.txt
+* [33m1b3a3b5[m Added setup guide
+* [33m716f5e6[m Update README.md
+* [33ma3dfdeb[m Created README.md
+* [33m1b577c7[m More robust prompt/s, working tutor agent. Need to expand on search for v2
+* [33mf585b0b[m working brave MCP
+* [33m98257a7[m Tutor working better now, better prompts
+* [33mef2b033[m Added requirements.txt
+* [33m0dab32e[m tutor agent still sucks but not workflow style now
+* [33m964bf4e[m garbage but working agent tutor mode
+* [33m2db3bfc[m Working knowledge base tools
+* [33m58e1fcc[m Updated notes in nn agent mode
+* [33m3b69cf3[m Working nn agent mode
+* [33m03b887b[m Working nn-workflow mode
+* [33m3a1f316[m nn_mode done workflow style
+* [33m19b3aaa[m Working document ranker
+* [33m1e21c02[m Working NN model test
+* [33mbfa2f98[m Random nn update
+* [33m41583f5[m Experimenting with NNs
+* [33m36432eb[m Fixed exploring-agents file location
+* [33m4179d11[m Included first agents working file
+* [33m45f6378[m Confirmed agent can tackle various topics
+* [33mb1d2bbd[m Trigger GitHub activity refresh
+* [33mdb4be97[m Trigger GitHub activity refresh
+* [33m1fadb8e[m chore: fix git email
+* [33m383a89d[m agent_mode done
+* [33m3441734[m Use cheaper LLM
+* [33mfc07b35[m Fixed being able to select LLM model
+* [33m0900eb5[m Fixed sarcasm not working
+* [33m0377976[m Reports are saved to correct folders
+* [33m523251a[m updated notes
+* [33m993cde1[m Working agent_mode (v2)
+* [33ma792247[m Fixed output structure maybe
+* [33m9f33bbc[m Fixed persist tool not being used
+* [33m38ccf1e[m fixed gitignore
+* [33m5e0b202[m updated gitignore
+* [33mb7ec038[m agent_mode v1 added
+* [33m3a45f81[m fixed notes
+* [33m345b537[m deleting analysis report
+* [33m337f5cb[m Testing Workflow mode
+* [33m6363b14[m Add updated report with consistent formatting
+* [33mec4adca[m Workflow mode done
+* [33mde7134d[m Move generated reports to root and update io_utils
+* [33m71f5130[m Add generated report example and update .gitignore
+* [33m4145a0d[m Add search function with arXiv API, fix API key loading, and add persist functionality
+* [33m4ec5291[m Search done
+* [33md1beb26[m Workflow node started

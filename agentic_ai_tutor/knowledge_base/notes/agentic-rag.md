@@ -1,0 +1,3 @@
+# agentic RAG
+
+Researchers are embedding autonomous AI agents into retrieval-augmented generation pipelines to enhance adaptability, scalability, and context awareness. They focus on dynamic retrieval strategy management, iterative refinement of context, multiagent collaboration, and tool use for complex workflows. Applications span healthcare, finance, and education. Challenges include scaling, ethical decision-making, and performance optimization. Recent surveys provide taxonomies of architectures, practical implementation strategies, and highlight the integration of agentic design patterns such as reflection, planning, and collaboration frameworks. This knowledge was updated based on a comprehensive 2025 survey paper on Agentic RAG.
