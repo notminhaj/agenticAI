@@ -44,16 +44,15 @@ def read_markdown(path: Path) -> str:
 def get_openai_client():
     if not OPENAI_API_KEY:
         raise RuntimeError("OPENAI_API_KEY not set in environment")
-    openai.api_key = OPENAI_API_KEY
-    return openai
+    return openai.OpenAI(api_key=OPENAI_API_KEY)
 
 def embed_text(text: str) -> List[float]:
     client = get_openai_client()
-    resp = client.Embedding.create(
+    resp = client.embeddings.create(
         model=EMBED_MODEL,
         input=text,
     )
-    return resp["data"][0]["embedding"]
+    return resp.data[0].embedding
 
 def main():
     topics = load_topics()
