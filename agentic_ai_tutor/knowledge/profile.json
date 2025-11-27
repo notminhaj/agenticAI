@@ -70,5 +70,23 @@
     "confidence": 3.0,
     "note_path": "agentic_ai_tutor\\knowledge_base\\notes\\biology.md",
     "last_reviewed": "2025-11-20"
-  }
+  },
+  "topics": {
+    "agentic AI": {
+      "mastery": 0.7,
+      "confidence": 0.7,
+      "last_reviewed": "2025-11-27"
+    },
+    "Model Context Protocol": {
+      "mastery": 6.0,
+      "confidence": 8.0,
+      "last_reviewed": "2025-11-27"
+    },
+    "large language models": {
+      "mastery": 0.7,
+      "confidence": 0.8,
+      "last_reviewed": "2025-11-27"
+    }
+  },
+  "updated_at": "2025-11-27T02:50:05Z"
 }

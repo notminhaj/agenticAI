@@ -88,6 +88,7 @@ def semantic_note_search(query: str, top_k: int = 5) -> List[dict]:
 def read_note(note_path: str) -> str:
     """
     Read the full content of a markdown note from the knowledge base.
+    Use this tool right after using the semantic_note_search tool
     Args:
         note_path (str): Relative path, as returned by semantic_note_search.
     """

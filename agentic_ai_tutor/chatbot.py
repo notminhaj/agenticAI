@@ -29,7 +29,7 @@ while True:
         agent=tutor
     )
 
-    crew = Crew(agents=[tutor], tasks=[task], verbose=1, tracing=False) # Set verbose and tracing to False if you don't want to see them
+    crew = Crew(agents=[tutor], tasks=[task], verbose=0, tracing=False) # Set verbose and tracing to False if you don't want to see them
     response = crew.kickoff()
 
     print(f"\nTutor: {response}\n")

@@ -3,6 +3,7 @@ import os
 from crewai import Agent, LLM
 from tools.knowledge_base_read import kb_read
 from tools.knowledge_base_update import kb_update
+from tools.kb_write_note import kb_write_note
 from tools.search import search
 from tools.multi_source_search import multi_source_search
 from tools.fetch import fetch
@@ -30,6 +31,7 @@ def create_tutor_agent():
         tools=[
             kb_read,          # ← reads his brain
             kb_update,        # ← writes to his brain
+            kb_write_note,
             multi_source_search,
             fetch,
             rank_documents,   # ← e5-base-v2 relevance ranking

@@ -7,7 +7,7 @@ from crewai.tools import tool
 def kb_read() -> Dict[str, Any]:
     """
     Reads the user's current knowledge profile and recent learning timeline. 
-    Use this at the start of every session to understand what the user already knows and what they need to learn.
+    You MUST use this at the start of every session to understand what the user already knows and what they need to learn.
     
     Returns:
         dict: Knowledge base data containing:
@@ -19,6 +19,7 @@ def kb_read() -> Dict[str, Any]:
     Note:
         If files don't exist or are malformed, returns empty defaults with appropriate status.
         Never crashes the agent - always returns a valid dictionary.
+        After using this tool, highly recommended you use the kb_search tool for a better understanding of the user's knowledge.
     """
     # Get the base directory (agentic_ai_tutor folder)
     base_dir = Path(__file__).parent.parent
