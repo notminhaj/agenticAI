@@ -832,5 +832,85 @@
     "new_value": 0.8,
     "reason": "Reviewed and summarized user's notes on LLMs",
     "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-27T03:04:03Z",
+    "event": "metadata_update",
+    "topic": "large language models",
+    "field": "mastery",
+    "old_value": 0.7,
+    "new_value": 0.0,
+    "reason": "User requested clearing of notes on LLMs; reset knowledge metadata.",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-27T03:04:03Z",
+    "event": "metadata_update",
+    "topic": "large language models",
+    "field": "confidence",
+    "old_value": 0.8,
+    "new_value": 0.0,
+    "reason": "User requested clearing of notes on LLMs; reset knowledge metadata.",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-27T03:07:47Z",
+    "event": "metadata_update",
+    "topic": "CrewAI agents",
+    "field": "mastery",
+    "old_value": null,
+    "new_value": 3.5,
+    "reason": "User implemented their own tutor AI agent personalized to their understanding using Crew AI, showing applied knowledge.",
+    "source": "user"
+  },
+  {
+    "timestamp": "2025-11-27T03:07:47Z",
+    "event": "metadata_update",
+    "topic": "CrewAI agents",
+    "field": "confidence",
+    "old_value": null,
+    "new_value": 5.0,
+    "reason": "User implemented their own tutor AI agent personalized to their understanding using Crew AI, showing applied knowledge.",
+    "source": "user"
+  },
+  {
+    "timestamp": "2025-11-27T03:14:52Z",
+    "event": "metadata_update",
+    "topic": "quantum mechanics",
+    "field": "mastery",
+    "old_value": null,
+    "new_value": 0.0,
+    "reason": "User requested clearing of notes, resetting mastery and confidence.",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-27T03:14:52Z",
+    "event": "metadata_update",
+    "topic": "quantum mechanics",
+    "field": "confidence",
+    "old_value": null,
+    "new_value": 0.0,
+    "reason": "User requested clearing of notes, resetting mastery and confidence.",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-27T03:20:17Z",
+    "event": "metadata_update",
+    "topic": "self-healing agents",
+    "field": "mastery",
+    "old_value": null,
+    "new_value": 0.0,
+    "reason": "User requested clearing of notes, resetting mastery and confidence.",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-27T03:20:17Z",
+    "event": "metadata_update",
+    "topic": "self-healing agents",
+    "field": "confidence",
+    "old_value": null,
+    "new_value": 0.0,
+    "reason": "User requested clearing of notes, resetting mastery and confidence.",
+    "source": "agent"
   }
 ]

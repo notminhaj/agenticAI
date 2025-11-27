@@ -4,6 +4,13 @@ from datetime import datetime, timezone
 from crewai.tools import tool
 from sentence_transformers import SentenceTransformer
 import numpy as np
+import re
+
+def slugify(name: str) -> str:
+    s = name.lower()
+    s = re.sub(r'[^a-z0-9]+', '-', s)
+    s = re.sub(r'-+', '-', s).strip('-')
+    return s
 
 @tool
 def kb_write_note(topic: str,
@@ -26,8 +33,10 @@ def kb_write_note(topic: str,
 
     base_dir = Path(__file__).parent.parent
     knowledge_dir = base_dir / "knowledge_base" / "notes"
-    md_path = knowledge_dir / f"{topic}.md"
-    embeddings_path = knowledge_dir / "embeddings.json"
+    md_path = knowledge_dir / f"{slugify(topic)}.md"
+    print(knowledge_dir)
+    print(md_path)
+    embeddings_path = base_dir / "knowledge_base" / "embeddings" / "kb_index.json"
 
     knowledge_dir.mkdir(parents=True, exist_ok=True)
 
@@ -56,7 +65,7 @@ def kb_write_note(topic: str,
 
     return {
         "status": "success",
-        "topic": topic,
+        "slugified-topic": slugify(topic),
         "message": "Note written and embeddings updated.",
         "embedding_dim": len(vec)
     }

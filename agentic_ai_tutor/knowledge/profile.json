@@ -83,10 +83,25 @@
       "last_reviewed": "2025-11-27"
     },
     "large language models": {
-      "mastery": 0.7,
-      "confidence": 0.8,
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "last_reviewed": "2025-11-27"
+    },
+    "CrewAI agents": {
+      "mastery": 3.5,
+      "confidence": 5.0,
+      "last_reviewed": "2025-11-27"
+    },
+    "quantum mechanics": {
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "last_reviewed": "2025-11-27"
+    },
+    "self-healing agents": {
+      "mastery": 0.0,
+      "confidence": 0.0,
       "last_reviewed": "2025-11-27"
     }
   },
-  "updated_at": "2025-11-27T02:50:05Z"
+  "updated_at": "2025-11-27T03:20:17Z"
 }
