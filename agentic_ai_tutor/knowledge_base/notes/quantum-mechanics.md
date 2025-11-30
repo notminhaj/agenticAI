@@ -1,3 +1,0 @@
-# quantum mechanics
-
-
