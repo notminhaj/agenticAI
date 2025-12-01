@@ -101,7 +101,22 @@
       "mastery": 0.0,
       "confidence": 0.0,
       "last_reviewed": "2025-11-27"
+    },
+    "test_topic": {
+      "mastery": 6.0,
+      "confidence": 9.0,
+      "last_reviewed": "2025-12-01"
+    },
+    "Neurology Advances 2024": {
+      "mastery": 2.0,
+      "confidence": 3.0,
+      "last_reviewed": "2025-12-01"
+    },
+    "cool applications of AI agents": {
+      "mastery": 3.0,
+      "confidence": 4.0,
+      "last_reviewed": "2025-12-01"
     }
   },
-  "updated_at": "2025-11-27T03:20:17Z"
+  "updated_at": "2025-12-01T00:21:17Z"
 }

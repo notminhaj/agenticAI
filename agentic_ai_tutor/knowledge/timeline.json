@@ -912,5 +912,85 @@
     "new_value": 0.0,
     "reason": "User requested clearing of notes, resetting mastery and confidence.",
     "source": "agent"
+  },
+  {
+    "timestamp": "2025-11-30T23:55:28Z",
+    "event": "metadata_update",
+    "topic": "test_topic",
+    "field": "mastery",
+    "old_value": null,
+    "new_value": 5.0,
+    "reason": "Testing update",
+    "source": "test_script"
+  },
+  {
+    "timestamp": "2025-11-30T23:55:28Z",
+    "event": "metadata_update",
+    "topic": "test_topic",
+    "field": "confidence",
+    "old_value": null,
+    "new_value": 8.0,
+    "reason": "Testing update",
+    "source": "test_script"
+  },
+  {
+    "timestamp": "2025-12-01T00:02:15Z",
+    "event": "metadata_update",
+    "topic": "test_topic",
+    "field": "mastery",
+    "old_value": 5.0,
+    "new_value": 6.0,
+    "reason": "Testing sequential update",
+    "source": "test_script"
+  },
+  {
+    "timestamp": "2025-12-01T00:02:15Z",
+    "event": "metadata_update",
+    "topic": "test_topic",
+    "field": "confidence",
+    "old_value": 8.0,
+    "new_value": 9.0,
+    "reason": "Testing sequential update",
+    "source": "test_script"
+  },
+  {
+    "timestamp": "2025-12-01T00:09:59Z",
+    "event": "metadata_update",
+    "topic": "Neurology Advances 2024",
+    "field": "mastery",
+    "old_value": null,
+    "new_value": 2.0,
+    "reason": "Added baseline update about current popular neurology topics due to lack of fresh sources",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-12-01T00:09:59Z",
+    "event": "metadata_update",
+    "topic": "Neurology Advances 2024",
+    "field": "confidence",
+    "old_value": null,
+    "new_value": 3.0,
+    "reason": "Added baseline update about current popular neurology topics due to lack of fresh sources",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-12-01T00:21:17Z",
+    "event": "metadata_update",
+    "topic": "cool applications of AI agents",
+    "field": "mastery",
+    "old_value": null,
+    "new_value": 3.0,
+    "reason": "User asked for interesting current use cases of AI agents. Updated with detailed types and real-world examples from botpress.com article.",
+    "source": "botpress.com blog '36 Real-World Examples of AI Agents'"
+  },
+  {
+    "timestamp": "2025-12-01T00:21:17Z",
+    "event": "metadata_update",
+    "topic": "cool applications of AI agents",
+    "field": "confidence",
+    "old_value": null,
+    "new_value": 4.0,
+    "reason": "User asked for interesting current use cases of AI agents. Updated with detailed types and real-world examples from botpress.com article.",
+    "source": "botpress.com blog '36 Real-World Examples of AI Agents'"
   }
 ]

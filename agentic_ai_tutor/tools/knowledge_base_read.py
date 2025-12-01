@@ -1,44 +1,77 @@
 import json
+import math
+import os
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
+from openai import OpenAI
 from crewai.tools import tool
 
+# Constants
+ROOT = Path(__file__).resolve().parents[1]
+INDEX_PATH = ROOT / "knowledge_base" / "embeddings" / "kb_index.json"
+PROFILE_PATH = ROOT / "knowledge" / "profile.json"
+TIMELINE_PATH = ROOT / "knowledge" / "timeline.json"
+
+def get_client():
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise RuntimeError("OPENAI_API_KEY not set")
+    return OpenAI(api_key=api_key)
+
+def cosine_sim(a: List[float], b: List[float]) -> float:
+    dot = sum(x * y for x, y in zip(a, b))
+    na = math.sqrt(sum(x * x for x in a))
+    nb = math.sqrt(sum(y * y for y in b))
+    if na == 0 or nb == 0:
+        return 0.0
+    return dot / (na * nb)
+
 @tool
-def kb_read() -> Dict[str, Any]:
+def knowledge_base_read(query: str = None, note_path: str = None, top_k: int = 5) -> Dict[str, Any]:
     """
-    Reads the user's current knowledge profile and recent learning timeline. 
-    You MUST use this at the start of every session to understand what the user already knows and what they need to learn.
+    Unified tool for reading from the user's knowledge base.
     
+    Args:
+        query (str, optional): Search query to find relevant notes.
+        note_path (str, optional): Path to a specific note to read.
+        top_k (int, optional): Number of search results to return. Default 5.
+        
     Returns:
-        dict: Knowledge base data containing:
-            - profile (dict): Full content of profile.json with user's knowledge topics and mastery levels
-            - recent_events (list): Last 10 events from timeline.json (most recent first)
-            - status (str): "success", "partial", or "error"
-            - message (str): Optional human-readable note about the operation
-            
-    Note:
-        If files don't exist or are malformed, returns empty defaults with appropriate status.
-        Never crashes the agent - always returns a valid dictionary.
-        After using this tool, highly recommended you use the kb_search tool for a better understanding of the user's knowledge.
+        dict: A dictionary containing results from the executed operations:
+            - "profile": User's knowledge profile and recent events (always returned).
+            - "search_results": List of relevant notes (if query provided).
+            - "note_content": Content of the specified note (if note_path provided).
     """
-    # Get the base directory (agentic_ai_tutor folder)
-    base_dir = Path(__file__).parent.parent
-    profile_path = base_dir / "knowledge" / "profile.json"
-    timeline_path = base_dir / "knowledge" / "timeline.json"
     
+    results = {}
+    
+    # Always read profile
+    results["profile"] = _read_profile()
+    
+    # Search notes if query provided
+    if query:
+        results["search_results"] = _search_notes(query, top_k)
+        
+    # Read note if path provided
+    if note_path:
+        results["note_content"] = _read_note(note_path)
+        
+    return results
+
+def _read_profile() -> Dict[str, Any]:
     profile_data = {}
     timeline_data = []
     status = "success"
     messages = []
     
     # Load profile.json
-    if not profile_path.exists():
-        messages.append(f"Profile file not found: {profile_path}")
+    if not PROFILE_PATH.exists():
+        messages.append(f"Profile file not found: {PROFILE_PATH}")
         status = "partial" if status == "success" else "error"
         profile_data = {"updated_at": None, "topics": {}}
     else:
         try:
-            with open(profile_path, 'r', encoding='utf-8') as f:
+            with open(PROFILE_PATH, 'r', encoding='utf-8') as f:
                 profile_data = json.load(f)
         except json.JSONDecodeError as e:
             messages.append(f"Profile JSON is malformed: {str(e)}")
@@ -50,13 +83,13 @@ def kb_read() -> Dict[str, Any]:
             profile_data = {"updated_at": None, "topics": {}}
     
     # Load timeline.json
-    if not timeline_path.exists():
-        messages.append(f"Timeline file not found: {timeline_path}")
+    if not TIMELINE_PATH.exists():
+        messages.append(f"Timeline file not found: {TIMELINE_PATH}")
         status = "partial" if status == "success" else "error"
         timeline_data = []
     else:
         try:
-            with open(timeline_path, 'r', encoding='utf-8') as f:
+            with open(TIMELINE_PATH, 'r', encoding='utf-8') as f:
                 timeline_data = json.load(f)
                 
             # Ensure timeline_data is a list
@@ -65,8 +98,6 @@ def kb_read() -> Dict[str, Any]:
                 timeline_data = []
             else:
                 # Sort by timestamp (most recent first) and take last 10
-                # Events are already in chronological order (oldest to newest)
-                # So we take the last 10 and reverse to get most recent first
                 sorted_events = sorted(
                     timeline_data,
                     key=lambda x: x.get("timestamp", ""),
@@ -83,13 +114,53 @@ def kb_read() -> Dict[str, Any]:
             status = "error"
             timeline_data = []
     
-    # Build result dictionary
-    result = {
+    return {
         "profile": profile_data,
         "recent_events": timeline_data,
         "status": status,
         "message": "; ".join(messages) if messages else None
     }
-    
-    return result
 
+def _search_notes(query: str, top_k: int) -> List[dict]:
+    if not INDEX_PATH.exists():
+        return [{"error": f"KB index not found at {INDEX_PATH}. Run build_kb_index.py first."}]
+
+    client = get_client()
+
+    # embed query
+    resp = client.embeddings.create(
+        model="text-embedding-3-small",
+        input=query
+    )
+    q_emb = resp.data[0].embedding
+
+    # load index
+    with INDEX_PATH.open("r", encoding="utf-8") as f:
+        records = json.load(f)
+
+    scored = []
+    for rec in records:
+        score = cosine_sim(q_emb, rec["embedding"])
+
+        note_file = ROOT / rec["note_path"]
+        try:
+            text = note_file.read_text(encoding="utf-8")
+        except FileNotFoundError:
+            text = ""
+        preview = text[:200].replace("\n", " ")
+
+        scored.append({
+            "title": rec["title"],
+            "note_path": rec["note_path"],
+            "score": score,
+            "preview": preview
+        })
+
+    scored.sort(key=lambda r: r["score"], reverse=True)
+    return scored[:top_k]
+
+def _read_note(note_path: str) -> str:
+    path = ROOT / note_path
+    if not path.exists():
+        return f"Note not found: {note_path}"
+    return path.read_text(encoding="utf-8")
