@@ -24,7 +24,7 @@ while True:
         description=f"""The user just said: {user_input}
         Any piece of information you share must come from a source.
         Your response must be catered to the user's level of understanding
-        Whenever you present the user with new information, update their knowledge base before presenting your final answer""",
+        Before you present the user with new information, update their knowledge base first (before presenting your final answer)""",
         expected_output=CHATBOT_EXPECTED_OUTPUT,
         agent=tutor
     )

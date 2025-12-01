@@ -7,12 +7,12 @@ from sentence_transformers import SentenceTransformer
 import re
 
 # Constants
+# Constants
 ROOT = Path(__file__).resolve().parents[1]
-KNOWLEDGE_DIR = ROOT / "knowledge"
-PROFILE_PATH = KNOWLEDGE_DIR / "profile.json"
-TIMELINE_PATH = KNOWLEDGE_DIR / "timeline.json"
-NOTES_DIR = ROOT / "knowledge_base" / "notes"
-EMBEDDINGS_PATH = ROOT / "knowledge_base" / "embeddings" / "kb_index.json"
+KNOWLEDGE_BASE_DIR = ROOT / "knowledge_base"
+TIMELINE_PATH = KNOWLEDGE_BASE_DIR / "timeline.json"
+NOTES_DIR = KNOWLEDGE_BASE_DIR / "notes"
+EMBEDDINGS_PATH = KNOWLEDGE_BASE_DIR / "embeddings" / "kb_index.json"
 
 def slugify(name: str) -> str:
     s = name.lower()
@@ -22,28 +22,34 @@ def slugify(name: str) -> str:
 
 @tool
 def knowledge_base_write(topic: str, 
-                         mastery: float = None, 
-                         confidence: float = None, 
+                         mastery: float = -1.0, 
+                         confidence: float = -1.0, 
                          reason: str = "", 
                          source: str = "agent",
-                         note: str = None,
+                         note: str = "",
                          mode: str = "append") -> Dict[str, Any]:
     """
     Unified tool for writing to the user's knowledge base.
     
+    CRITICAL INSTRUCTION FOR AGENT:
+    You MUST update the knowledge base with any new information you are about to explain to the user 
+    BEFORE you send your final response. The user is learning from you, so if you teach them something new, 
+    record it in their knowledge base so you remember next time that they know it.
+    
     Args:
-        topic (str): The topic name. Required.
-        mastery (float, optional): New mastery level (0-10).
-        confidence (float, optional): New confidence level (0-10).
-        reason (str, optional): Reason for update.
-        source (str, optional): Source of information ('agent' or 'user').
-        note (str, optional): Content of the note to write.
-        mode (str, optional): "append" or "replace" for note writing. Default "append".
+        topic (str, required): The main topic name (e.g., "Agentic AI", "Python Loops"). Required.
+        mastery (float, optional): Your assessment of the user's mastery (0-10). Use -1.0 to skip updating.
+        confidence (float, optional): Your assessment of the user's confidence (0-10). Use -1.0 to skip updating.
+        reason (str, optional): Why are you updating this? (e.g., "User asked about X", "User demonstrated knowledge of Y").
+        source (str, optional): Where did this info come from? (e.g., "agent", "user").
+        note (str, optional): A concise summary of the NEW information you are teaching the user. 
+                              Defaults to "" (no note).
+        mode (str, required): "append" to add to existing notes (RECOMMENDED), "replace" to overwrite. Default "append".
         
     Returns:
-        dict: A dictionary containing results from the executed operations:
-            - "metadata_update": Result of metadata update (always executed).
-            - "note_write": Result of note writing (if note provided).
+        dict: A dictionary containing:
+            - "metadata_update": Confirmation that mastery/confidence were updated.
+            - "note_write": Confirmation that the note was saved and embedded.
     """
     
     results = {}
@@ -57,51 +63,70 @@ def knowledge_base_write(topic: str,
         
     return results
 
-def _update_metadata(topic: str, mastery: Optional[float], confidence: Optional[float], reason: str, source: str) -> Dict[str, Any]:
-    KNOWLEDGE_DIR.mkdir(parents=True, exist_ok=True)
+def _update_metadata(topic: str, mastery: float, confidence: float, reason: str, source: str) -> Dict[str, Any]:
+    KNOWLEDGE_BASE_DIR.mkdir(parents=True, exist_ok=True)
+    EMBEDDINGS_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    # Load or create profile
-    if PROFILE_PATH.exists():
+    # Load KB Index
+    kb_index = []
+    if EMBEDDINGS_PATH.exists():
         try:
-            profile = json.loads(PROFILE_PATH.read_text(encoding="utf-8"))
+            kb_index = json.loads(EMBEDDINGS_PATH.read_text(encoding="utf-8"))
+            if not isinstance(kb_index, list):
+                kb_index = []
         except:
-            profile = {"updated_at": None, "topics": {}}
-    else:
-        profile = {"updated_at": None, "topics": {}}
+            kb_index = []
 
-    if "topics" not in profile:
-        profile["topics"] = {}
-
-    # Topic entry
-    topic_entry = profile["topics"].get(topic, {})
+    # Find or create record
+    record = None
+    record_idx = -1
+    for i, item in enumerate(kb_index):
+        if item.get("title") == topic:
+            record = item
+            record_idx = i
+            break
+            
+    if record is None:
+        record = {
+            "id": slugify(topic),
+            "title": topic,
+            "note_path": f"knowledge_base/notes/{slugify(topic)}.md",
+            "embedding": [],
+            "mastery": 0.0,
+            "confidence": 0.0,
+            "last_reviewed": None
+        }
+        kb_index.append(record)
+        record_idx = len(kb_index) - 1
 
     changes = []
 
-    if mastery is not None:
+    if mastery >= 0:
         mastery = float(max(0, min(10, mastery)))
-        old = topic_entry.get("mastery")
+        old = record.get("mastery", 0.0)
         if old != mastery:
-            topic_entry["mastery"] = mastery
+            record["mastery"] = mastery
             changes.append(("mastery", old, mastery))
 
-    if confidence is not None:
+    if confidence >= 0:
         confidence = float(max(0, min(10, confidence)))
-        old = topic_entry.get("confidence")
+        old = record.get("confidence", 0.0)
         if old != confidence:
-            topic_entry["confidence"] = confidence
+            record["confidence"] = confidence
             changes.append(("confidence", old, confidence))
 
     if changes:
-        topic_entry["last_reviewed"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        profile["topics"][topic] = topic_entry
-        profile["updated_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-        PROFILE_PATH.write_text(json.dumps(profile, indent=2), encoding="utf-8")
+        record["last_reviewed"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        kb_index[record_idx] = record
+        EMBEDDINGS_PATH.write_text(json.dumps(kb_index, indent=2), encoding="utf-8")
 
     # Timeline logging
     if changes:
         if TIMELINE_PATH.exists():
             try:
                 timeline = json.loads(TIMELINE_PATH.read_text(encoding="utf-8"))
+                if not isinstance(timeline, list):
+                    timeline = []
             except:
                 timeline = []
         else:
@@ -159,20 +184,30 @@ def _write_note(topic: str, note: str, mode: str) -> Dict[str, Any]:
     
     # Update or append record
     note_rel_path = f"knowledge_base/notes/{slugify(topic)}.md"
-    record = {
-        "title": topic,
-        "note_path": note_rel_path,
-        "embedding": vec.tolist()
-    }
     
     updated = False
     for i, item in enumerate(index):
         if item.get("title") == topic or item.get("note_path") == note_rel_path:
+            # Preserve existing metadata
+            record = item
+            record["title"] = topic # Ensure title matches
+            record["note_path"] = note_rel_path
+            record["embedding"] = vec.tolist()
+            # mastery, confidence, last_reviewed are preserved
             index[i] = record
             updated = True
             break
             
     if not updated:
+        record = {
+            "id": slugify(topic),
+            "title": topic,
+            "note_path": note_rel_path,
+            "embedding": vec.tolist(),
+            "mastery": 0.0,
+            "confidence": 0.0,
+            "last_reviewed": None
+        }
         index.append(record)
 
     EMBEDDINGS_PATH.write_text(json.dumps(index, indent=2), encoding="utf-8")

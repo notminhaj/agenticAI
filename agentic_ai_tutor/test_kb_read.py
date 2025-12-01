@@ -21,16 +21,9 @@ if "search_results" in search_result:
 else:
     print("No search results returned")
 
-# Test read_note
+# Test read_note removed as note_path argument is deprecated
+# The content is now returned in search_results
 if "search_results" in search_result and search_result["search_results"]:
-    note_path = search_result["search_results"][0].get("note_path")
-    print(f"\n--- Testing read_note for {note_path} ---")
-    note_result = knowledge_base_read.func(note_path=note_path)
-    if "note_content" in note_result:
-        print(f"Note content length: {len(note_result['note_content'])}")
-    else:
-        print("Note content not returned")
-else:
-    print("\nSkipping read_note test as no note was found.")
+    print("Top note content length:", len(search_result["search_results"][0].get("content", "")))
 
 print("\n=== TEST COMPLETE ===")

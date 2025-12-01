@@ -9,8 +9,7 @@ from crewai.tools import tool
 # Constants
 ROOT = Path(__file__).resolve().parents[1]
 INDEX_PATH = ROOT / "knowledge_base" / "embeddings" / "kb_index.json"
-PROFILE_PATH = ROOT / "knowledge" / "profile.json"
-TIMELINE_PATH = ROOT / "knowledge" / "timeline.json"
+TIMELINE_PATH = ROOT / "knowledge_base" / "timeline.json"
 
 def get_client():
     api_key = os.getenv("OPENAI_API_KEY")
@@ -27,20 +26,24 @@ def cosine_sim(a: List[float], b: List[float]) -> float:
     return dot / (na * nb)
 
 @tool
-def knowledge_base_read(query: str = None, note_path: str = None, top_k: int = 5) -> Dict[str, Any]:
+def knowledge_base_read(query: str = "", top_k: int = 5) -> Dict[str, Any]:
     """
     Unified tool for reading from the user's knowledge base.
     
+    CRITICAL INSTRUCTION FOR AGENT:
+    Your primary goal is to cater responses to the user's level of understanding. 
+    Use this tool to search for what the user already knows about a topic BEFORE answering.
+    If the user asks about any topic, e.g. "Software Development, Biology, Physics", check if they already know the basics so you don't bore them.
+    
     Args:
-        query (str, optional): Search query to find relevant notes.
-        note_path (str, optional): Path to a specific note to read.
+        query (str, optional): Search query to find relevant notes (e.g., "agentic AI", "python basics"). 
+                               Defaults to "" (no search).
         top_k (int, optional): Number of search results to return. Default 5.
         
     Returns:
-        dict: A dictionary containing results from the executed operations:
-            - "profile": User's knowledge profile and recent events (always returned).
-            - "search_results": List of relevant notes (if query provided).
-            - "note_content": Content of the specified note (if note_path provided).
+        dict: A dictionary containing:
+            - "profile": The user's entire knowledge profile (topics, mastery levels) and recent events.
+            - "search_results": A list of relevant notes matching your query (if query provided).
     """
     
     results = {}
@@ -52,35 +55,46 @@ def knowledge_base_read(query: str = None, note_path: str = None, top_k: int = 5
     if query:
         results["search_results"] = _search_notes(query, top_k)
         
-    # Read note if path provided
-    if note_path:
-        results["note_content"] = _read_note(note_path)
-        
     return results
 
 def _read_profile() -> Dict[str, Any]:
-    profile_data = {}
+    """
+    Reads the profile from kb_index.json and transforms it into the expected dictionary format.
+    """
+    profile_data = {"topics": {}}
     timeline_data = []
     status = "success"
     messages = []
     
-    # Load profile.json
-    if not PROFILE_PATH.exists():
-        messages.append(f"Profile file not found: {PROFILE_PATH}")
+    # Load kb_index.json (acting as profile)
+    if not INDEX_PATH.exists():
+        messages.append(f"KB Index file not found: {INDEX_PATH}")
         status = "partial" if status == "success" else "error"
-        profile_data = {"updated_at": None, "topics": {}}
     else:
         try:
-            with open(PROFILE_PATH, 'r', encoding='utf-8') as f:
-                profile_data = json.load(f)
+            with open(INDEX_PATH, 'r', encoding='utf-8') as f:
+                kb_index = json.load(f)
+                
+            if isinstance(kb_index, list):
+                for record in kb_index:
+                    title = record.get("title")
+                    if title:
+                        profile_data["topics"][title] = {
+                            "mastery": record.get("mastery", 0.0),
+                            "confidence": record.get("confidence", 0.0),
+                            "last_reviewed": record.get("last_reviewed"),
+                            "note_path": record.get("note_path")
+                        }
+            else:
+                 messages.append("KB Index is not a list")
+                 status = "error"
+
         except json.JSONDecodeError as e:
-            messages.append(f"Profile JSON is malformed: {str(e)}")
+            messages.append(f"KB Index JSON is malformed: {str(e)}")
             status = "error"
-            profile_data = {"updated_at": None, "topics": {}}
         except Exception as e:
-            messages.append(f"Error reading profile: {str(e)}")
+            messages.append(f"Error reading KB Index: {str(e)}")
             status = "error"
-            profile_data = {"updated_at": None, "topics": {}}
     
     # Load timeline.json
     if not TIMELINE_PATH.exists():
@@ -123,44 +137,62 @@ def _read_profile() -> Dict[str, Any]:
 
 def _search_notes(query: str, top_k: int) -> List[dict]:
     if not INDEX_PATH.exists():
-        return [{"error": f"KB index not found at {INDEX_PATH}. Run build_kb_index.py first."}]
+        return [{"error": f"KB Index not found at {INDEX_PATH}. Run build_kb_index.py first."}]
 
     client = get_client()
 
     # embed query
-    resp = client.embeddings.create(
-        model="text-embedding-3-small",
-        input=query
-    )
-    q_emb = resp.data[0].embedding
+    try:
+        resp = client.embeddings.create(
+            model="text-embedding-3-small",
+            input=query
+        )
+        q_emb = resp.data[0].embedding
+    except Exception as e:
+        return [{"error": f"Embedding generation failed: {str(e)}"}]
 
     # load index
-    with INDEX_PATH.open("r", encoding="utf-8") as f:
-        records = json.load(f)
+    try:
+        with INDEX_PATH.open("r", encoding="utf-8") as f:
+            records = json.load(f)
+    except Exception as e:
+        return [{"error": f"Failed to load index: {str(e)}"}]
 
     scored = []
     for rec in records:
+        # Skip records with no embedding
+        if not rec.get("embedding"):
+            continue
+            
         score = cosine_sim(q_emb, rec["embedding"])
 
-        note_file = ROOT / rec["note_path"]
-        try:
-            text = note_file.read_text(encoding="utf-8")
-        except FileNotFoundError:
+        note_path = rec.get("note_path", "")
+        if note_path:
+            note_file = ROOT / note_path
+            try:
+                if note_file.is_file():
+                    text = note_file.read_text(encoding="utf-8")
+                else:
+                    text = ""
+            except Exception:
+                text = ""
+        else:
             text = ""
-        preview = text[:200].replace("\n", " ")
+            
+        # Return full content as 'content' instead of just preview, since we removed note_path reading
+        # But wait, user said "use embeddings to find most relevant notes".
+        # I'll stick to returning a generous preview or full content?
+        # Let's return full content in 'content' field so the agent can actually read it.
+        content = text 
 
         scored.append({
-            "title": rec["title"],
-            "note_path": rec["note_path"],
+            "title": rec.get("title", "Untitled"),
+            "note_path": note_path,
             "score": score,
-            "preview": preview
+            "content": content, # Changed from preview to content
+            "mastery": rec.get("mastery"),
+            "confidence": rec.get("confidence")
         })
 
     scored.sort(key=lambda r: r["score"], reverse=True)
     return scored[:top_k]
-
-def _read_note(note_path: str) -> str:
-    path = ROOT / note_path
-    if not path.exists():
-        return f"Note not found: {note_path}"
-    return path.read_text(encoding="utf-8")
