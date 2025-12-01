@@ -1,0 +1,119 @@
+{
+  "updated_at": "2025-12-01T05:52:19Z",
+  "topics": {
+    "CrewAI agents": {
+      "mastery": 3.5,
+      "confidence": 5.0,
+      "last_reviewed": "2025-11-27",
+      "note_path": "knowledge_base/notes/crewai-agents.md"
+    },
+    "sentence transformers": {
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "last_reviewed": "2025-11-19",
+      "note_path": "knowledge_base/notes/sentence-transformers.md"
+    },
+    "advanced RAG": {
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "last_reviewed": "2025-11-19",
+      "note_path": "knowledge_base/notes/advanced-rag.md"
+    },
+    "self-improving agents": {
+      "mastery": 1.0,
+      "confidence": 2.0,
+      "last_reviewed": "2025-12-01",
+      "note_path": "knowledge_base/notes/self-improving-agents.md"
+    },
+    "tool calling": {
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "last_reviewed": "2025-11-19",
+      "note_path": "knowledge_base/notes/tool-calling.md"
+    },
+    "self-healing agents": {
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "last_reviewed": "2025-11-27",
+      "note_path": "knowledge_base/notes/self-healing-agents.md"
+    },
+    "Agentic AI": {
+      "mastery": 1.5,
+      "confidence": 3.0,
+      "last_reviewed": "2025-12-01",
+      "note_path": "knowledge_base/notes/agentic-ai.md"
+    },
+    "large language models": {
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "last_reviewed": "2025-11-27",
+      "note_path": "knowledge_base/notes/large-language-models.md"
+    },
+    "agentic RAG": {
+      "mastery": 6.0,
+      "confidence": 6.0,
+      "last_reviewed": "2025-11-19",
+      "note_path": "knowledge_base/notes/agentic-rag.md"
+    },
+    "Model Context Protocol": {
+      "mastery": 6.0,
+      "confidence": 8.0,
+      "last_reviewed": "2025-11-27",
+      "note_path": "knowledge_base/notes/model-context-protocol.md"
+    },
+    "quantum mechanics": {
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "last_reviewed": "2025-11-27",
+      "note_path": "knowledge_base/notes/quantum-mechanics.md"
+    },
+    "biology": {
+      "mastery": 1.0,
+      "confidence": 4.0,
+      "last_reviewed": "2025-12-01",
+      "note_path": "knowledge_base/notes/biology.md"
+    },
+    "test_topic": {
+      "mastery": 6.0,
+      "confidence": 9.0,
+      "last_reviewed": "2025-12-01",
+      "note_path": "knowledge_base/notes/test_topic.md"
+    },
+    "Neurology Advances 2024": {
+      "mastery": 2.0,
+      "confidence": 3.0,
+      "last_reviewed": "2025-12-01",
+      "note_path": "knowledge_base/notes/neurology-advances-2024.md"
+    },
+    "cool applications of AI agents": {
+      "mastery": 3.0,
+      "confidence": 4.0,
+      "last_reviewed": "2025-12-01",
+      "note_path": "knowledge_base/notes/cool-applications-of-ai-agents.md"
+    },
+    "agentic AI": {
+      "mastery": 3.0,
+      "confidence": 4.0,
+      "last_reviewed": "2025-12-01",
+      "note_path": ""
+    },
+    "cell biology": {
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "last_reviewed": null,
+      "note_path": "knowledge_base/notes/cell-biology.md"
+    },
+    "Python Recent Projects": {
+      "mastery": 2.0,
+      "confidence": 3.0,
+      "last_reviewed": "2025-12-01",
+      "note_path": "knowledge_base/notes/python-recent-projects.md"
+    },
+    "binary search algorithm": {
+      "mastery": 4.0,
+      "confidence": 5.0,
+      "last_reviewed": "2025-12-01",
+      "note_path": "knowledge_base/notes/binary-search-algorithm.md"
+    }
+  }
+}

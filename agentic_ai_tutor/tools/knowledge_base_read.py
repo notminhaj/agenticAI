@@ -3,19 +3,21 @@ import math
 import os
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-from openai import OpenAI
 from crewai.tools import tool
+from sentence_transformers import SentenceTransformer
 
 # Constants
 ROOT = Path(__file__).resolve().parents[1]
 INDEX_PATH = ROOT / "knowledge_base" / "embeddings" / "kb_index.json"
+METADATA_PATH = ROOT / "knowledge_base" / "kb_metadata.json"
 TIMELINE_PATH = ROOT / "knowledge_base" / "timeline.json"
 
-def get_client():
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        raise RuntimeError("OPENAI_API_KEY not set")
-    return OpenAI(api_key=api_key)
+# Initialize model globally to avoid reloading on every call
+try:
+    MODEL = SentenceTransformer("intfloat/e5-base-v2")
+except Exception as e:
+    print(f"Error loading model: {e}")
+    MODEL = None
 
 def cosine_sim(a: List[float], b: List[float]) -> float:
     dot = sum(x * y for x, y in zip(a, b))
@@ -59,41 +61,26 @@ def knowledge_base_read(query: str = "", top_k: int = 5) -> Dict[str, Any]:
 
 def _read_profile() -> Dict[str, Any]:
     """
-    Reads the profile from kb_index.json and transforms it into the expected dictionary format.
+    Reads the profile from kb_metadata.json and transforms it into the expected dictionary format.
     """
     profile_data = {"topics": {}}
     timeline_data = []
     status = "success"
     messages = []
     
-    # Load kb_index.json (acting as profile)
-    if not INDEX_PATH.exists():
-        messages.append(f"KB Index file not found: {INDEX_PATH}")
+    # Load kb_metadata.json
+    if not METADATA_PATH.exists():
+        messages.append(f"Metadata file not found: {METADATA_PATH}")
         status = "partial" if status == "success" else "error"
     else:
         try:
-            with open(INDEX_PATH, 'r', encoding='utf-8') as f:
-                kb_index = json.load(f)
-                
-            if isinstance(kb_index, list):
-                for record in kb_index:
-                    title = record.get("title")
-                    if title:
-                        profile_data["topics"][title] = {
-                            "mastery": record.get("mastery", 0.0),
-                            "confidence": record.get("confidence", 0.0),
-                            "last_reviewed": record.get("last_reviewed"),
-                            "note_path": record.get("note_path")
-                        }
-            else:
-                 messages.append("KB Index is not a list")
-                 status = "error"
-
+            with open(METADATA_PATH, 'r', encoding='utf-8') as f:
+                profile_data = json.load(f)
         except json.JSONDecodeError as e:
-            messages.append(f"KB Index JSON is malformed: {str(e)}")
+            messages.append(f"Metadata JSON is malformed: {str(e)}")
             status = "error"
         except Exception as e:
-            messages.append(f"Error reading KB Index: {str(e)}")
+            messages.append(f"Error reading Metadata: {str(e)}")
             status = "error"
     
     # Load timeline.json
@@ -139,15 +126,13 @@ def _search_notes(query: str, top_k: int) -> List[dict]:
     if not INDEX_PATH.exists():
         return [{"error": f"KB Index not found at {INDEX_PATH}. Run build_kb_index.py first."}]
 
-    client = get_client()
+    if MODEL is None:
+         return [{"error": "Embedding model not loaded."}]
 
     # embed query
     try:
-        resp = client.embeddings.create(
-            model="text-embedding-3-small",
-            input=query
-        )
-        q_emb = resp.data[0].embedding
+        # e5 models expect "query: " prefix for queries
+        q_emb = MODEL.encode(f"query: {query}").tolist()
     except Exception as e:
         return [{"error": f"Embedding generation failed: {str(e)}"}]
 
@@ -157,6 +142,16 @@ def _search_notes(query: str, top_k: int) -> List[dict]:
             records = json.load(f)
     except Exception as e:
         return [{"error": f"Failed to load index: {str(e)}"}]
+
+    # load metadata for enrichment
+    metadata = {}
+    if METADATA_PATH.exists():
+        try:
+            with open(METADATA_PATH, 'r', encoding='utf-8') as f:
+                meta_raw = json.load(f)
+                metadata = meta_raw.get("topics", {})
+        except:
+            pass
 
     scored = []
     for rec in records:
@@ -179,19 +174,19 @@ def _search_notes(query: str, top_k: int) -> List[dict]:
         else:
             text = ""
             
-        # Return full content as 'content' instead of just preview, since we removed note_path reading
-        # But wait, user said "use embeddings to find most relevant notes".
-        # I'll stick to returning a generous preview or full content?
-        # Let's return full content in 'content' field so the agent can actually read it.
         content = text 
+        
+        # Enrich with metadata
+        title = rec.get("title", "Untitled")
+        topic_meta = metadata.get(title, {})
 
         scored.append({
-            "title": rec.get("title", "Untitled"),
+            "title": title,
             "note_path": note_path,
             "score": score,
-            "content": content, # Changed from preview to content
-            "mastery": rec.get("mastery"),
-            "confidence": rec.get("confidence")
+            "content": content,
+            "mastery": topic_meta.get("mastery", 0.0),
+            "confidence": topic_meta.get("confidence", 0.0)
         })
 
     scored.sort(key=lambda r: r["score"], reverse=True)

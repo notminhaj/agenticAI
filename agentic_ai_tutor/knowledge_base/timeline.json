@@ -1082,5 +1082,67 @@
     "new_value": 4.0,
     "reason": "User requested biology notes but had only a blank note. Added foundational biology info to start building knowledge.",
     "source": "agent"
+  },
+  {
+    "timestamp": "2025-12-01T05:25:41.274951+00:00",
+    "topic": "test_topic",
+    "type": "update",
+    "changes": [],
+    "reason": "Testing sequential update",
+    "source": "test_script"
+  },
+  {
+    "timestamp": "2025-12-01T05:32:11.823749+00:00",
+    "topic": "test_topic",
+    "type": "update",
+    "changes": [],
+    "reason": "Testing sequential update",
+    "source": "test_script"
+  },
+  {
+    "timestamp": "2025-12-01T05:46:43.774928+00:00",
+    "topic": "Python Recent Projects",
+    "type": "update",
+    "changes": [
+      {
+        "field": "mastery",
+        "old": 0.0,
+        "new": 2.0
+      },
+      {
+        "field": "confidence",
+        "old": 0.0,
+        "new": 3.0
+      }
+    ],
+    "reason": "User asked about recent cool Python projects",
+    "source": "web_dataquest_2025"
+  },
+  {
+    "timestamp": "2025-12-01T05:48:25.025224+00:00",
+    "topic": "Python Recent Projects",
+    "type": "update",
+    "changes": [],
+    "reason": "User requested to review existing notes for Python, sharing Python Recent Projects note content to reinforce learning.",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-12-01T05:52:19.870062+00:00",
+    "topic": "binary search algorithm",
+    "type": "update",
+    "changes": [
+      {
+        "field": "mastery",
+        "old": 0.0,
+        "new": 4.0
+      },
+      {
+        "field": "confidence",
+        "old": 0.0,
+        "new": 5.0
+      }
+    ],
+    "reason": "User asked about how binary search works; basic explanation provided to update knowledge base.",
+    "source": "agent"
   }
 ]

@@ -1,24 +1,39 @@
 import json
+import os
+import math
 from pathlib import Path
 from datetime import datetime, timezone
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 from crewai.tools import tool
-from sentence_transformers import SentenceTransformer
-import re
+from openai import OpenAI
 
-# Constants
 # Constants
 ROOT = Path(__file__).resolve().parents[1]
 KNOWLEDGE_BASE_DIR = ROOT / "knowledge_base"
-TIMELINE_PATH = KNOWLEDGE_BASE_DIR / "timeline.json"
-NOTES_DIR = KNOWLEDGE_BASE_DIR / "notes"
 EMBEDDINGS_PATH = KNOWLEDGE_BASE_DIR / "embeddings" / "kb_index.json"
+METADATA_PATH = KNOWLEDGE_BASE_DIR / "kb_metadata.json"
+TIMELINE_PATH = KNOWLEDGE_BASE_DIR / "timeline.json"
 
-def slugify(name: str) -> str:
-    s = name.lower()
-    s = re.sub(r'[^a-z0-9]+', '-', s)
-    s = re.sub(r'-+', '-', s).strip('-')
-    return s
+def get_client():
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise RuntimeError("OPENAI_API_KEY not set")
+    return OpenAI(api_key=api_key)
+
+def get_embedding(text: str) -> List[float]:
+    client = get_client()
+    try:
+        resp = client.embeddings.create(
+            model="text-embedding-3-small",
+            input=text
+        )
+        return resp.data[0].embedding
+    except Exception as e:
+        print(f"Error generating embedding: {e}")
+        return []
+
+def slugify(text: str) -> str:
+    return text.lower().replace(" ", "-").replace("/", "-")
 
 @tool
 def knowledge_base_write(topic: str, 
@@ -37,14 +52,14 @@ def knowledge_base_write(topic: str,
     record it in their knowledge base so you remember next time that they know it.
     
     Args:
-        topic (str, required): The main topic name (e.g., "Agentic AI", "Python Loops"). Required.
+        topic (str): The main topic name (e.g., "Agentic AI", "Python Loops"). Required.
         mastery (float, optional): Your assessment of the user's mastery (0-10). Use -1.0 to skip updating.
         confidence (float, optional): Your assessment of the user's confidence (0-10). Use -1.0 to skip updating.
         reason (str, optional): Why are you updating this? (e.g., "User asked about X", "User demonstrated knowledge of Y").
         source (str, optional): Where did this info come from? (e.g., "agent", "user").
         note (str, optional): A concise summary of the NEW information you are teaching the user. 
                               Defaults to "" (no note).
-        mode (str, required): "append" to add to existing notes (RECOMMENDED), "replace" to overwrite. Default "append".
+        mode (str): "append" to add to existing notes (RECOMMENDED), "replace" to overwrite. Default "append".
         
     Returns:
         dict: A dictionary containing:
@@ -65,40 +80,26 @@ def knowledge_base_write(topic: str,
 
 def _update_metadata(topic: str, mastery: float, confidence: float, reason: str, source: str) -> Dict[str, Any]:
     KNOWLEDGE_BASE_DIR.mkdir(parents=True, exist_ok=True)
-    EMBEDDINGS_PATH.parent.mkdir(parents=True, exist_ok=True)
-
-    # Load KB Index
-    kb_index = []
-    if EMBEDDINGS_PATH.exists():
+    
+    # Load Metadata
+    metadata = {"updated_at": "", "topics": {}}
+    if METADATA_PATH.exists():
         try:
-            kb_index = json.loads(EMBEDDINGS_PATH.read_text(encoding="utf-8"))
-            if not isinstance(kb_index, list):
-                kb_index = []
+            with open(METADATA_PATH, 'r', encoding='utf-8') as f:
+                metadata = json.load(f)
         except:
-            kb_index = []
-
-    # Find or create record
-    record = None
-    record_idx = -1
-    for i, item in enumerate(kb_index):
-        if item.get("title") == topic:
-            record = item
-            record_idx = i
-            break
+            pass
             
-    if record is None:
-        record = {
-            "id": slugify(topic),
-            "title": topic,
-            "note_path": f"knowledge_base/notes/{slugify(topic)}.md",
-            "embedding": [],
+    # Find or create topic record
+    if topic not in metadata["topics"]:
+        metadata["topics"][topic] = {
             "mastery": 0.0,
             "confidence": 0.0,
-            "last_reviewed": None
+            "last_reviewed": None,
+            "note_path": f"knowledge_base/notes/{slugify(topic)}.md"
         }
-        kb_index.append(record)
-        record_idx = len(kb_index) - 1
-
+    
+    record = metadata["topics"][topic]
     changes = []
 
     if mastery >= 0:
@@ -115,106 +116,117 @@ def _update_metadata(topic: str, mastery: float, confidence: float, reason: str,
             record["confidence"] = confidence
             changes.append(("confidence", old, confidence))
 
-    if changes:
-        record["last_reviewed"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        kb_index[record_idx] = record
-        EMBEDDINGS_PATH.write_text(json.dumps(kb_index, indent=2), encoding="utf-8")
+    # Save Metadata if changed or new
+    # We save if there are changes OR if the topic was just added (since we modified metadata["topics"])
+    if changes or topic in metadata["topics"]: 
+        metadata["updated_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        if changes:
+             record["last_reviewed"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        
+        with open(METADATA_PATH, 'w', encoding='utf-8') as f:
+            json.dump(metadata, f, indent=2)
 
-    # Timeline logging
-    if changes:
-        if TIMELINE_PATH.exists():
-            try:
-                timeline = json.loads(TIMELINE_PATH.read_text(encoding="utf-8"))
-                if not isinstance(timeline, list):
-                    timeline = []
-            except:
-                timeline = []
-        else:
-            timeline = []
-
-        ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-
-        for (field, old, new) in changes:
-            timeline.append({
-                "timestamp": ts,
-                "event": "metadata_update",
-                "topic": topic,
-                "field": field,
-                "old_value": old,
-                "new_value": new,
-                "reason": reason,
-                "source": source
-            })
-
-        TIMELINE_PATH.write_text(json.dumps(timeline, indent=2), encoding="utf-8")
+    # Log to timeline
+    if changes or reason:
+        _log_event(topic, changes, reason, source)
 
     return {
         "status": "success",
         "topic": topic,
-        "message": "Updated fields: " + ", ".join([c[0] for c in changes]) if changes else "No changes"
+        "changes": [f"{k}: {v1}->{v2}" for k, v1, v2 in changes],
+        "current_state": record
     }
 
-def _write_note(topic: str, note: str, mode: str) -> Dict[str, Any]:
-    md_path = NOTES_DIR / f"{slugify(topic)}.md"
+def _write_note(topic: str, content: str, mode: str) -> Dict[str, Any]:
+    slug = slugify(topic)
+    filename = f"{slug}.md"
+    notes_dir = KNOWLEDGE_BASE_DIR / "notes"
+    notes_dir.mkdir(parents=True, exist_ok=True)
+    filepath = notes_dir / filename
     
-    NOTES_DIR.mkdir(parents=True, exist_ok=True)
-    EMBEDDINGS_PATH.parent.mkdir(parents=True, exist_ok=True)
-
-    # Write or append markdown file
-    if mode == "replace" or not md_path.exists():
-        md_path.write_text(f"# {topic}\n\n{note}\n", encoding="utf-8")
+    # Write file
+    if mode == "replace":
+        filepath.write_text(content, encoding="utf-8")
     else:
-        with open(md_path, "a", encoding="utf-8") as f:
-            f.write("\n\n" + note + "\n")
-
-    # Load embedding index
+        existing = ""
+        if filepath.exists():
+            existing = filepath.read_text(encoding="utf-8") + "\n\n"
+        filepath.write_text(existing + content, encoding="utf-8")
+        
+    # Update Embeddings Index
+    EMBEDDINGS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    kb_index = []
     if EMBEDDINGS_PATH.exists():
         try:
-            index = json.loads(EMBEDDINGS_PATH.read_text(encoding="utf-8"))
-            if not isinstance(index, list):
-                index = []
+            kb_index = json.loads(EMBEDDINGS_PATH.read_text(encoding="utf-8"))
         except:
-            index = []
-    else:
-        index = []
-
-    # Generate embedding
-    model = SentenceTransformer("intfloat/e5-base-v2")
-    vec = model.encode([md_path.read_text(encoding="utf-8")])[0]
-    
-    # Update or append record
-    note_rel_path = f"knowledge_base/notes/{slugify(topic)}.md"
-    
-    updated = False
-    for i, item in enumerate(index):
-        if item.get("title") == topic or item.get("note_path") == note_rel_path:
-            # Preserve existing metadata
+            kb_index = []
+            
+    # Find or create index record
+    record = None
+    for item in kb_index:
+        if item.get("title") == topic:
             record = item
-            record["title"] = topic # Ensure title matches
-            record["note_path"] = note_rel_path
-            record["embedding"] = vec.tolist()
-            # mastery, confidence, last_reviewed are preserved
-            index[i] = record
-            updated = True
             break
             
-    if not updated:
-        record = {
-            "id": slugify(topic),
+    full_text = filepath.read_text(encoding="utf-8")
+    embedding = get_embedding(full_text)
+    
+    if record:
+        record["embedding"] = embedding
+        # Ensure path is correct
+        record["note_path"] = f"knowledge_base/notes/{filename}"
+    else:
+        kb_index.append({
+            "id": slug,
             "title": topic,
-            "note_path": note_rel_path,
-            "embedding": vec.tolist(),
-            "mastery": 0.0,
-            "confidence": 0.0,
-            "last_reviewed": None
-        }
-        index.append(record)
-
-    EMBEDDINGS_PATH.write_text(json.dumps(index, indent=2), encoding="utf-8")
-
+            "note_path": f"knowledge_base/notes/{filename}",
+            "embedding": embedding
+        })
+        
+    EMBEDDINGS_PATH.write_text(json.dumps(kb_index, indent=2), encoding="utf-8")
+    
+    # Ensure metadata also has the correct note path
+    _ensure_metadata_path(topic, f"knowledge_base/notes/{filename}")
+    
     return {
         "status": "success",
-        "slugified-topic": slugify(topic),
-        "message": "Note written and embeddings updated.",
-        "embedding_dim": len(vec)
+        "file": str(filepath),
+        "size": len(full_text),
+        "embeddings_updated": True
     }
+
+def _ensure_metadata_path(topic: str, note_path: str):
+    if METADATA_PATH.exists():
+        try:
+            with open(METADATA_PATH, 'r', encoding='utf-8') as f:
+                metadata = json.load(f)
+            
+            if topic in metadata["topics"]:
+                if metadata["topics"][topic].get("note_path") != note_path:
+                    metadata["topics"][topic]["note_path"] = note_path
+                    metadata["updated_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+                    with open(METADATA_PATH, 'w', encoding='utf-8') as f:
+                        json.dump(metadata, f, indent=2)
+        except:
+            pass
+
+def _log_event(topic: str, changes: List[tuple], reason: str, source: str):
+    event = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "topic": topic,
+        "type": "update",
+        "changes": [{"field": k, "old": v1, "new": v2} for k, v1, v2 in changes],
+        "reason": reason,
+        "source": source
+    }
+    
+    timeline = []
+    if TIMELINE_PATH.exists():
+        try:
+            timeline = json.loads(TIMELINE_PATH.read_text(encoding="utf-8"))
+        except:
+            timeline = []
+            
+    timeline.append(event)
+    TIMELINE_PATH.write_text(json.dumps(timeline, indent=2), encoding="utf-8")

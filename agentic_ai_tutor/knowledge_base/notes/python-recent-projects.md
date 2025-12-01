@@ -1,0 +1,1 @@
+Highlights of recent Python projects focus on building web apps with frameworks like Flask and Django, automation scripts for data cleanup and report generation, using APIs for data retrieval, and simple AI/ML model prototyping with libraries like scikit-learn and TensorFlow.
