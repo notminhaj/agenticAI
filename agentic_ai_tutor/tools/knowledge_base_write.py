@@ -59,7 +59,7 @@ def knowledge_base_write(topic: str,
         source (str, optional): Where did this info come from? (e.g., "agent", "user").
         note (str, optional): A concise summary of the NEW information you are teaching the user. 
                               Defaults to "" (no note).
-        mode (str): "append" to add to existing notes (RECOMMENDED), "replace" to overwrite. Default "append".
+        mode (str, REQUIRED): "append" to add to existing notes (RECOMMENDED), "replace" to overwrite. Default "append".
         
     Returns:
         dict: A dictionary containing:

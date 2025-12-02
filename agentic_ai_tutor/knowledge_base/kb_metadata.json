@@ -1,5 +1,5 @@
 {
-  "updated_at": "2025-12-01T05:52:19Z",
+  "updated_at": "2025-12-02T01:35:24Z",
   "topics": {
     "CrewAI agents": {
       "mastery": 3.5,
@@ -68,9 +68,9 @@
       "note_path": "knowledge_base/notes/quantum-mechanics.md"
     },
     "biology": {
-      "mastery": 1.0,
-      "confidence": 4.0,
-      "last_reviewed": "2025-12-01",
+      "mastery": 2.0,
+      "confidence": 5.0,
+      "last_reviewed": "2025-12-02",
       "note_path": "knowledge_base/notes/biology.md"
     },
     "test_topic": {
@@ -80,9 +80,9 @@
       "note_path": "knowledge_base/notes/test_topic.md"
     },
     "Neurology Advances 2024": {
-      "mastery": 2.0,
-      "confidence": 3.0,
-      "last_reviewed": "2025-12-01",
+      "mastery": 3.0,
+      "confidence": 4.0,
+      "last_reviewed": "2025-12-02",
       "note_path": "knowledge_base/notes/neurology-advances-2024.md"
     },
     "cool applications of AI agents": {
@@ -114,6 +114,12 @@
       "confidence": 5.0,
       "last_reviewed": "2025-12-01",
       "note_path": "knowledge_base/notes/binary-search-algorithm.md"
+    },
+    "Neurology Advances 2025": {
+      "mastery": 4.0,
+      "confidence": 5.0,
+      "last_reviewed": "2025-12-02",
+      "note_path": "knowledge_base/notes/neurology-advances-2025.md"
     }
   }
 }
