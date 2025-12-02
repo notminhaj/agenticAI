@@ -1,0 +1,1 @@
+New major resource 'Quantum 2.0' by physicist Paul Davies releasing in February 2026 covers the past, present, and future knowledge on quantum physics. No direct research papers strictly post-June 2025 found in initial federated search.

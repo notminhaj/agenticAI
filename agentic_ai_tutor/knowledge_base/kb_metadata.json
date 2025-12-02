@@ -1,5 +1,5 @@
 {
-  "updated_at": "2025-12-02T01:35:24Z",
+  "updated_at": "2025-12-02T03:59:37Z",
   "topics": {
     "CrewAI agents": {
       "mastery": 3.5,
@@ -120,6 +120,30 @@
       "confidence": 5.0,
       "last_reviewed": "2025-12-02",
       "note_path": "knowledge_base/notes/neurology-advances-2025.md"
+    },
+    "latest trends in physics 2024": {
+      "mastery": 2.0,
+      "confidence": 3.0,
+      "last_reviewed": "2025-12-02",
+      "note_path": "knowledge_base/notes/latest-trends-in-physics-2024.md"
+    },
+    "Latest physics breakthroughs after June 2025": {
+      "mastery": 1.0,
+      "confidence": 1.0,
+      "last_reviewed": "2025-12-02",
+      "note_path": "knowledge_base/notes/latest-physics-breakthroughs-after-june-2025.md"
+    },
+    "Quantum Mechanics developments post-June 2025": {
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "last_reviewed": null,
+      "note_path": "knowledge_base/notes/quantum-mechanics-developments-post-june-2025.md"
+    },
+    "machine learning twitter buzz 2025": {
+      "mastery": 2.5,
+      "confidence": 4.0,
+      "last_reviewed": "2025-12-02",
+      "note_path": "knowledge_base/notes/machine-learning-twitter-buzz-2025.md"
     }
   }
 }

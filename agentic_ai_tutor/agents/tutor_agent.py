@@ -3,9 +3,9 @@ import os
 from crewai import Agent, LLM
 from tools.knowledge_base_read import knowledge_base_read
 from tools.knowledge_base_write import knowledge_base_write
-from tools.search import search
-from tools.multi_source_search import multi_source_search
-from tools.fetch import fetch
+from tools.federated_search import federated_search
+
+
 from tools.rank_documents import rank_documents  # your e5-base-v2 ranker
 from tools.summarize import summarize
 from tools.persist import persist
@@ -45,8 +45,8 @@ CURRENT BRAIN SNAPSHOT:
         tools=[
             knowledge_base_read,  # Unified knowledge base read tool
             knowledge_base_write, # Unified knowledge base write tool
-            multi_source_search,
-            fetch,
+            federated_search,
+
             rank_documents,   # ← e5-base-v2 relevance ranking
             summarize,
             persist,
