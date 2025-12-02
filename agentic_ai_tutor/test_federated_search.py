@@ -9,6 +9,25 @@ sys.modules["crewai.tools"] = MagicMock()
 sys.modules["nn_model"] = MagicMock()
 sys.modules["nn_model.nn"] = MagicMock()
 sys.modules["transformers"] = MagicMock()
+sys.modules["openai"] = MagicMock()
+sys.modules["torch"] = MagicMock()
+sys.modules["torch.nn.functional"] = MagicMock()
+sys.modules["torch.nn.functional"] = MagicMock()
+sys.modules["sentence_transformers"] = MagicMock()
+
+# Define a mock tool decorator that preserves the function
+def mock_tool(name_or_func):
+    if callable(name_or_func):
+        name_or_func.func = name_or_func
+        return name_or_func
+    def wrapper(func):
+        func.func = func
+        return func
+    return wrapper
+
+mock_crewai_tools = MagicMock()
+mock_crewai_tools.tool = mock_tool
+sys.modules["crewai.tools"] = mock_crewai_tools
 
 from unittest import TestCase, main
 from unittest.mock import patch, MagicMock
@@ -99,6 +118,29 @@ class TestFederatedSearch(TestCase):
         self.assertEqual(results[0]['title'], "HN Story")
         self.assertEqual(results[0]['source'], "hackernews")
 
+    @patch('tools.federated_search.requests.get')
+    def test_search_twitter_via_brave(self, mock_get):
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "web": {
+                "results": [
+                    {"title": "Twitter Post", "url": "https://twitter.com/user/123", "description": "Tweet content", "age": "1h"}
+                ]
+            }
+        }
+        mock_get.return_value = mock_response
+        
+        with patch('tools.federated_search.BRAVE_API_KEY', 'fake_key'):
+            results = search_twitter_via_brave(["test"], 1)
+            self.assertEqual(len(results), 1)
+            self.assertEqual(results[0]['title'], "Twitter Post")
+            self.assertEqual(results[0]['source'], "twitter_web")
+            
+            # Verify query param
+            args, kwargs = mock_get.call_args
+            self.assertIn("site:twitter.com OR site:x.com", kwargs['params']['q'])
+
     @patch('tools.federated_search.rank_documents')
     @patch('tools.federated_search.fetch')
     @patch('tools.federated_search.expand_keywords')
@@ -126,7 +168,7 @@ class TestFederatedSearch(TestCase):
         ]
         
         # Run search
-        result_str = federated_search.func("test topic", limit=1)
+        result_str = federated_search.func("test topic", limit=2)
         
         self.assertIn("Federated Search Results", result_str)
         self.assertIn("[ARXIV] Arxiv Paper", result_str)

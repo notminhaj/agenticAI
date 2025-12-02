@@ -1,5 +1,5 @@
 {
-  "updated_at": "2025-12-02T03:59:37Z",
+  "updated_at": "2025-12-02T04:29:24Z",
   "topics": {
     "CrewAI agents": {
       "mastery": 3.5,
@@ -144,6 +144,12 @@
       "confidence": 4.0,
       "last_reviewed": "2025-12-02",
       "note_path": "knowledge_base/notes/machine-learning-twitter-buzz-2025.md"
+    },
+    "Twitter Buzz Prediction in Machine Learning": {
+      "mastery": 2.0,
+      "confidence": 2.0,
+      "last_reviewed": "2025-12-02",
+      "note_path": "knowledge_base/notes/twitter-buzz-prediction-in-machine-learning.md"
     }
   }
 }
