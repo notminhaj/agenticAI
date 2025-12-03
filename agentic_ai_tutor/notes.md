@@ -12,3 +12,11 @@
 - Time for RAG? or something smarter?
 - Hybrid approach best, make notes database
 - Leave json file with metadata details
+- Implemented hybrid approach (metadata + notes retrieval)
+
+## ISSUE: Agent is not conversational
+- Agent doesn't remember the last message
+- Agent is not context-aware
+- Loads kb and writes to it every message
+- Crew AI costs a lot of tokens
+- Need to turn this into a conversational AI
