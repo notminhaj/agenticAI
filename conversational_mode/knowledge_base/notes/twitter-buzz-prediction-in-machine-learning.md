@@ -1,0 +1,1 @@
+Twitter Buzz Prediction uses ML models to analyze tweet features (text, hashtags, user info, timing) to forecast popularity metrics like retweets and likes. Relevant to real-time trend spotting and marketing analytics on Twitter. This is a fresh, data-driven way ML intersects with social media buzz.

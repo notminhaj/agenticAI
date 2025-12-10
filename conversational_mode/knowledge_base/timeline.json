@@ -1287,41 +1287,79 @@
     "source": "GitHub - nilabja9/TwitterBuzzML"
   },
   {
-    "timestamp": "2025-12-10T03:19:11.172463+00:00",
-    "topic": "aerospace latest advancements 2024",
+    "timestamp": "2025-12-08T05:28:55.766061+00:00",
+    "topic": "AI agent creation using Crew AI",
     "type": "update",
     "changes": [
       {
         "field": "mastery",
         "old": 0.0,
-        "new": 1.0
+        "new": 7.0
       },
       {
         "field": "confidence",
         "old": 0.0,
-        "new": 1.0
+        "new": 7.0
       }
     ],
-    "reason": "User asked for latest aerospace developments; new info from 2024 breakthroughs and reviews",
-    "source": "Popular Science 2024, Aerospace America 2024"
+    "reason": "Used Crew AI, a good library to create agents that can perform tasks.",
+    "source": "agent"
   },
   {
-    "timestamp": "2025-12-10T03:21:53.790182+00:00",
-    "topic": "aerospace engineering basics",
+    "timestamp": "2025-12-10T01:03:26.738471+00:00",
+    "topic": "Ready Player One (rp1)",
     "type": "update",
     "changes": [
       {
         "field": "mastery",
         "old": 0.0,
-        "new": 1.0
+        "new": 3.0
       },
       {
         "field": "confidence",
         "old": 0.0,
-        "new": 1.0
+        "new": 5.0
       }
     ],
-    "reason": "User starting to learn about aerospace engineering; adding foundational info sourced from NASA and educational resources.",
-    "source": "NASA, Aerospace Engineering Intro Textbooks"
+    "reason": "Introduces structured workflows and innovative usage of AI coding assistants.",
+    "source": "User-provided description"
+  },
+  {
+    "timestamp": "2025-12-10T01:16:09.204108+00:00",
+    "topic": "Agentic AI",
+    "type": "update",
+    "changes": [
+      {
+        "field": "mastery",
+        "old": 1.5,
+        "new": 3.0
+      },
+      {
+        "field": "confidence",
+        "old": 3.0,
+        "new": 5.0
+      }
+    ],
+    "reason": "User learned about workflows for Claude and vibe coding.",
+    "source": "agent"
+  },
+  {
+    "timestamp": "2025-12-10T01:18:19.603890+00:00",
+    "topic": "Agentic AI",
+    "type": "update",
+    "changes": [
+      {
+        "field": "mastery",
+        "old": 3.0,
+        "new": 5.0
+      },
+      {
+        "field": "confidence",
+        "old": 5.0,
+        "new": 6.0
+      }
+    ],
+    "reason": "User gained hands-on experience working with agents, automating tasks and enhancing work quality.",
+    "source": "agent"
   }
 ]

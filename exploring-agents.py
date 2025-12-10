@@ -21,6 +21,9 @@ def get_weather(city: str) -> str:
     except Exception as e:
         return f"Error fetching weather: {str(e)}"
 
+print(get_weather("San Francisco"))
+
+
 model = ChatOpenAI(model="gpt-4o-mini", api_key=OPENAI_API_KEY, temperature=0.7)
 
 prompt = PromptTemplate.from_template(

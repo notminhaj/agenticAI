@@ -1,0 +1,1 @@
+2024 neurology research focuses on AI-assisted diagnosis and treatment of neurodegenerative diseases (Alzheimer's, Parkinson's), advances in stroke treatment (clot retrieval), and brain-computer interfaces for rehabilitation. These are major clinical trial areas worldwide.

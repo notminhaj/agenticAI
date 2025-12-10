@@ -1,5 +1,5 @@
 {
-  "updated_at": "2025-12-10T03:21:53Z",
+  "updated_at": "2025-12-10T01:18:19Z",
   "topics": {
     "CrewAI agents": {
       "mastery": 3.5,
@@ -38,9 +38,9 @@
       "note_path": "knowledge_base/notes/self-healing-agents.md"
     },
     "Agentic AI": {
-      "mastery": 1.5,
-      "confidence": 3.0,
-      "last_reviewed": "2025-12-01",
+      "mastery": 5.0,
+      "confidence": 6.0,
+      "last_reviewed": "2025-12-10",
       "note_path": "knowledge_base/notes/agentic-ai.md"
     },
     "large language models": {
@@ -151,17 +151,17 @@
       "last_reviewed": "2025-12-02",
       "note_path": "knowledge_base/notes/twitter-buzz-prediction-in-machine-learning.md"
     },
-    "aerospace latest advancements 2024": {
-      "mastery": 1.0,
-      "confidence": 1.0,
-      "last_reviewed": "2025-12-10",
-      "note_path": "knowledge_base/notes/aerospace-latest-advancements-2024.md"
+    "AI agent creation using Crew AI": {
+      "mastery": 7.0,
+      "confidence": 7.0,
+      "last_reviewed": "2025-12-08",
+      "note_path": "knowledge_base/notes/ai-agent-creation-using-crew-ai.md"
     },
-    "aerospace engineering basics": {
-      "mastery": 1.0,
-      "confidence": 1.0,
+    "Ready Player One (rp1)": {
+      "mastery": 3.0,
+      "confidence": 5.0,
       "last_reviewed": "2025-12-10",
-      "note_path": "knowledge_base/notes/aerospace-engineering-basics.md"
+      "note_path": "knowledge_base/notes/ready-player-one-(rp1).md"
     }
   }
 }

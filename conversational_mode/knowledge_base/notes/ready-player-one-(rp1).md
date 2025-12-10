@@ -1,0 +1,1 @@
+RP1 offers slash commands for distinct development phases, enabling efficient AI assistance in coding tasks, and promotes transparency through open-source access.

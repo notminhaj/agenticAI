@@ -1,0 +1,17 @@
+# Agentic AI
+
+Agentic AI refers to AI systems designed to act autonomously with goal-directed behavior, making decisions and taking actions to achieve objectives. Recent searches returned no novel developments or scientific papers explicitly on agentic AI as of now. Will monitor for significant future updates.
+
+
+Agentic AI systems are autonomous AI agents that can accomplish specific goals with limited supervision by mimicking human decision-making in real-time. They build on generative AI by using large language models (LLMs) to act proactively in dynamic environments. Unlike traditional AI, agentic AI exhibits autonomy, goal-driven behavior, adaptability, and can interact with external tools, APIs, and data in real time. They specialize in tasks, coordinate through orchestration, and improve through learning and adaptation. Advantages include autonomy, proactivity, specialization, adaptability, and intuitive natural language interaction. Examples include autonomous trading bots, healthcare monitoring, cybersecurity, and supply chain management. Challenges involve risks if goals are poorly defined, including unintended behaviors, ethical issues, and operational bottlenecks.
+
+
+Agentic AI is an AI system able to accomplish specific goals with limited supervision, involving AI agents that mimic human decision-making to solve real-time problems. It extends generative AI by using large language models (LLMs) in dynamic environments to not just generate content but also apply it toward goals autonomously, often calling external tools. Advantages include autonomy, proactivity, specialization, adaptability, and intuitive natural language interaction. Agentic AI can manage multistep tasks, learn from experience, and coordinate via orchestration platforms. Applications span trading bots, autonomous vehicles, healthcare, cybersecurity, and supply chain management. Challenges involve risks if goals or reward functions are poorly designed, leading to unintended or harmful behavior. Multi-agent coordination can create bottlenecks or failures which require careful architecture and guardrails.
+
+
+Agentic AI is AI systems that act autonomously towards specific goals using LLM-powered agents capable of perception, reasoning, goal setting, decision making, execution, learning, and orchestration. They differ from generative AI by functioning in dynamic environments and performing tasks with limited supervision. Advantages include autonomy, proactivity, specialization, adaptability, and intuitive natural language interface. Architectures vary from hierarchical to decentralized multi-agent systems. Applications include trading, healthcare, cybersecurity, autonomous vehicles, supply chains. Challenges involve managing unintended behaviors, reward function design, and coordination across agents to avoid failures.
+
+
+Learned about structured workflows for AI coding assistants.
+
+Successfully automated various tasks and improved overall work quality using agents.
