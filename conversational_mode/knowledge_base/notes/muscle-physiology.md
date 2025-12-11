@@ -1,0 +1,1 @@
+User learned about muscle contraction mechanisms and energy sources but found some concepts unclear.

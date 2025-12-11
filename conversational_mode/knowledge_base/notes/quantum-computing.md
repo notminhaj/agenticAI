@@ -1,0 +1,1 @@
+Reviewed basics of qubits, entanglement, quantum gates, and algorithms.

@@ -1,0 +1,1 @@
+Explained what cybersecurity is, its importance, types of threats, key components, frameworks, and incident response.

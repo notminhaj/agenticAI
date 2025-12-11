@@ -1,5 +1,5 @@
 {
-  "updated_at": "2025-12-10T01:18:19Z",
+  "updated_at": "2025-12-11T05:18:56Z",
   "topics": {
     "CrewAI agents": {
       "mastery": 3.5,
@@ -162,6 +162,54 @@
       "confidence": 5.0,
       "last_reviewed": "2025-12-10",
       "note_path": "knowledge_base/notes/ready-player-one-(rp1).md"
+    },
+    "muscle tissue": {
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "last_reviewed": null,
+      "note_path": "knowledge_base/notes/muscle-tissue.md"
+    },
+    "sleeping contribute to muscular development": {
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "last_reviewed": null,
+      "note_path": "knowledge_base/notes/sleeping-contribute-to-muscular-development.md"
+    },
+    "Cybersecurity": {
+      "mastery": 0.0,
+      "confidence": 0.0,
+      "last_reviewed": null,
+      "note_path": "knowledge_base/notes/cybersecurity.md"
+    },
+    "Popular Chess Theories": {
+      "mastery": 1.5,
+      "confidence": 3.0,
+      "last_reviewed": "2025-12-11",
+      "note_path": "knowledge_base/notes/popular-chess-theories.md"
+    },
+    "Endgame Theory in Chess": {
+      "mastery": 1.5,
+      "confidence": 3.0,
+      "last_reviewed": "2025-12-11",
+      "note_path": "knowledge_base/notes/endgame-theory-in-chess.md"
+    },
+    "muscle physiology": {
+      "mastery": 1.5,
+      "confidence": 3.0,
+      "last_reviewed": "2025-12-11",
+      "note_path": "knowledge_base/notes/muscle-physiology.md"
+    },
+    "latest trends in meteorology": {
+      "mastery": 1.0,
+      "confidence": 3.0,
+      "last_reviewed": "2025-12-11",
+      "note_path": "knowledge_base/notes/latest-trends-in-meteorology.md"
+    },
+    "Quantum Computing": {
+      "mastery": 1.5,
+      "confidence": 3.0,
+      "last_reviewed": "2025-12-11",
+      "note_path": "knowledge_base/notes/quantum-computing.md"
     }
   }
 }

@@ -1,0 +1,1 @@
+Learned key concepts of endgame theory including king and pawn endings, basic mating patterns, transforming material advantages, and key principles.

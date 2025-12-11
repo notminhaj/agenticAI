@@ -1,0 +1,1 @@
+Learned about opening theory, tactics, positional play, endgame theory, and analytical tools in chess.
