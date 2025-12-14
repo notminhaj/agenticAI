@@ -9,6 +9,8 @@ Current State: **Conversational Agent (V3)** is the active flagship implementati
 ## 🚀 Quick Start
 See [SETUP.md](SETUP.md) for installation and usage instructions.
 
+---
+
 ## 🛠️ Key Technologies & Concepts
 
 ### 🧠 Knowledge Base (Long-term Memory)
