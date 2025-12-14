@@ -25,8 +25,8 @@ cp .env.example .env
 # BRAVE_API_KEY=BRAVE_...       # free at https://brave.com/search/api/
 
 # 5. Run the tutor
-python chatbot.py
+python conversational_mode/main.py
 
 # 6. Look around (optional, replace the hyphens "----" with your mode choice: agent_mode, workflow_mode etc.)
-cd ----_mode
-python main.py
+cd crew_ai_tutor_mode
+python chatbot.py
