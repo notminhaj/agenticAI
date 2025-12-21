@@ -1,0 +1,30 @@
+.container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: var(--assistant-bubble);
+    border: 1px solid var(--assistant-bubble-border);
+    border-radius: var(--radius-lg);
+    width: fit-content;
+    animation: fadeIn var(--transition-normal) ease-out;
+}
+
+.indicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    animation: dot-pulse 1s ease-in-out infinite;
+}
+
+.text {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}

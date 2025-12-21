@@ -1,0 +1,1 @@
+Outlined initial steps to building basic archaeology skills.

@@ -1,0 +1,138 @@
+.container {
+    display: flex;
+    gap: 0.75rem;
+    max-width: 85%;
+    animation: fadeIn var(--transition-normal) ease-out;
+}
+
+.container.user {
+    flex-direction: row-reverse;
+    align-self: flex-end;
+}
+
+.container.assistant {
+    align-self: flex-start;
+}
+
+/* Avatar */
+.avatar {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user .avatar {
+    background: var(--accent-primary);
+    color: white;
+}
+
+.assistant .avatar {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+}
+
+.icon {
+    width: 18px;
+    height: 18px;
+}
+
+/* Bubble */
+.bubble {
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-lg);
+    position: relative;
+}
+
+.user .bubble {
+    background: var(--user-bubble);
+    border: 1px solid var(--user-bubble-border);
+    border-top-right-radius: var(--radius-sm);
+}
+
+.assistant .bubble {
+    background: var(--assistant-bubble);
+    border: 1px solid var(--assistant-bubble-border);
+    border-top-left-radius: var(--radius-sm);
+}
+
+/* Content */
+.content {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--text-primary);
+}
+
+.content p:last-child {
+    margin-bottom: 0;
+}
+
+.content h1,
+.content h2,
+.content h3 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.content h1:first-child,
+.content h2:first-child,
+.content h3:first-child {
+    margin-top: 0;
+}
+
+.content ul,
+.content ol {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.content li {
+    margin: 0.25rem 0;
+}
+
+/* Code */
+.inlineCode {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.15rem 0.4rem;
+    border-radius: var(--radius-sm);
+}
+
+.codeBlock {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    margin: 0.75rem 0;
+    overflow-x: auto;
+}
+
+.codeBlock code {
+    background: none;
+    padding: 0;
+}
+
+/* Metadata */
+.metadata {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.modeBadge {
+    font-size: 0.7rem;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    background: var(--bg-tertiary);
+    padding: 0.15rem 0.4rem;
+    border-radius: var(--radius-sm);
+}

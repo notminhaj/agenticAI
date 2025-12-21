@@ -10,11 +10,21 @@ ARCHITECTURE:
 3. LLM: Generates responses and tool calls, guided by pending policy list
 """
 
+import os
+import sys
 import re
 import json
 from typing import List, Dict, Any, Optional, Set
 from dataclasses import dataclass, field
-from crewai import LLM
+try:
+    from crewai import LLM
+    print(f"[DEBUG] TutorAgent successfully imported crewai LLM", file=sys.stderr)
+except ImportError as e:
+    print(f"[ERROR] TutorAgent failed to import crewai: {e}", file=sys.stderr)
+    import traceback
+    traceback.print_exc()
+    raise e
+
 from unified_tool import execute_tool
 from config import TESTING
 from session_state import SessionState

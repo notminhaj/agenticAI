@@ -1,0 +1,1 @@
+Learned about archaeology as the study of human prehistory and history through artifacts and excavation.

@@ -1,5 +1,5 @@
 {
-  "updated_at": "2025-12-11T05:18:56Z",
+  "updated_at": "2025-12-21T02:30:23Z",
   "topics": {
     "CrewAI agents": {
       "mastery": 3.5,
@@ -56,9 +56,9 @@
       "note_path": "knowledge_base/notes/agentic-rag.md"
     },
     "Model Context Protocol": {
-      "mastery": 6.0,
-      "confidence": 8.0,
-      "last_reviewed": "2025-11-27",
+      "mastery": 2.0,
+      "confidence": 4.0,
+      "last_reviewed": "2025-12-14",
       "note_path": "knowledge_base/notes/model-context-protocol.md"
     },
     "quantum mechanics": {
@@ -98,9 +98,9 @@
       "note_path": ""
     },
     "cell biology": {
-      "mastery": 0.0,
-      "confidence": 0.0,
-      "last_reviewed": null,
+      "mastery": 1.5,
+      "confidence": 3.0,
+      "last_reviewed": "2025-12-21",
       "note_path": "knowledge_base/notes/cell-biology.md"
     },
     "Python Recent Projects": {
@@ -210,6 +210,48 @@
       "confidence": 3.0,
       "last_reviewed": "2025-12-11",
       "note_path": "knowledge_base/notes/quantum-computing.md"
+    },
+    "Archaeology": {
+      "mastery": 1.5,
+      "confidence": 3.0,
+      "last_reviewed": "2025-12-21",
+      "note_path": "knowledge_base/notes/archaeology.md"
+    },
+    "Basic Skills in Archaeology": {
+      "mastery": 1.5,
+      "confidence": 4.0,
+      "last_reviewed": "2025-12-21",
+      "note_path": "knowledge_base/notes/basic-skills-in-archaeology.md"
+    },
+    "neurology": {
+      "mastery": 4.0,
+      "confidence": 5.0,
+      "last_reviewed": "2025-12-21",
+      "note_path": "knowledge_base/notes/neurology.md"
+    },
+    "linear algebra": {
+      "mastery": 1.5,
+      "confidence": 3.0,
+      "last_reviewed": "2025-12-21",
+      "note_path": "knowledge_base/notes/linear-algebra.md"
+    },
+    "linear algebra in ML applications": {
+      "mastery": 1.0,
+      "confidence": 3.5,
+      "last_reviewed": "2025-12-21",
+      "note_path": "knowledge_base/notes/linear-algebra-in-ml-applications.md"
+    },
+    "importance of fundamentals in AI applications": {
+      "mastery": 2.0,
+      "confidence": 4.5,
+      "last_reviewed": "2025-12-21",
+      "note_path": "knowledge_base/notes/importance-of-fundamentals-in-ai-applications.md"
+    },
+    "full stack development": {
+      "mastery": 1.0,
+      "confidence": 3.0,
+      "last_reviewed": "2025-12-21",
+      "note_path": "knowledge_base/notes/full-stack-development.md"
     }
   }
 }

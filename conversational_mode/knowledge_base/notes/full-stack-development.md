@@ -1,0 +1,1 @@
+Introduced to the components of full stack development including front end and back end technologies.

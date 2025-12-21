@@ -1,0 +1,1 @@
+Learned the basics including vectors, matrices, and operations.

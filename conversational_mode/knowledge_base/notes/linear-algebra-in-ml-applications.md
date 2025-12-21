@@ -1,0 +1,1 @@
+Explored the importance of linear algebra for understanding model behavior, feature transformation, optimization, and algorithms in ML.
